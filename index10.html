@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="logo.png" type="image/x-icon">
+    <title>Scientific Calculator</title>
+    <style>
+        /* Basic page setup */
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #333333; /* Dark grey background for contrast */
+            font-family: Arial, sans-serif;
+        }
+
+        /* The main calculator body */
+        .calculator {
+            background-color: #000000; /* Black background yokumabuto */
+            border-radius: 12px;
+            padding: 20px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.25);
+        }
+
+        /* The display screen */
+        #display {
+            width: 100%;
+            height: 60px;
+            box-sizing: border-box; /* Ensures padding doesn't affect width */
+            border: none;
+            background-color: #504d4d; /* input color  */
+            color: #db0d0d; /* ibijya muri input  */
+            font-size: 2.5em;
+            text-align: right;
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        /* Grid container for all buttons */
+        .buttons {
+            display: grid;
+            /* 5 columns, 1fr means each takes an equal fraction of space */
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px; /* Space between buttons */
+        }
+
+        /* Styling for all buttons */
+        button {
+            background-color: #D32F2F; /* amabuto red */
+            color: #FFFFFF; /* ibara ryimibare White text */
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: bold;
+            padding: 20px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+            .video-bg1 {
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1; 
+            object-fit: cover; /* Bihindura video ikwira screen */
+        }
+
+        /* Hover effect for buttons */
+        button:hover {
+            background-color: #B71C1C; /* Darker red on hover */
+        }
+
+        /* Active (click) effect for buttons */
+        button:active {
+            background-color: #E53935; /* Slightly lighter red on click */
+        }
+
+        /* Special styling for control buttons (AC, DEL) */
+        .control {
+            background-color: #F44336; /* del na ac buttons color  */
+        }
+        .control:hover {
+            background-color: #D32F2F;
+        }
+
+        /* Special styling for operator buttons */
+        .operator {
+            background-color: #C62828; /* ibimenyesto + - etc.  */
+        }
+        .operator:hover {
+            background-color: #B71C1C;
+        }
+
+        /* Make the '=' button span 2 columns */
+        .equals {
+            grid-column: span 2;
+            background-color: #E53935; /* equals color */
+        }
+        .equals:hover {
+            background-color: #D32F2F;
+        }
+
+        /* === IBYO NONGEREYEMO (CSS) === */
+        /* Imiterere ya Buto ya 'Home' nshya */
+        .home-btn {
+            grid-column: span 5; /* Itwara imyanya 5 yose y'umurongo */
+            background-color: #9836f4; /* home button color  */
+        }
+        .home-btn:hover {
+            background-color: #5a5a5e;
+        }
+        /* === IBYO NONGEREYEMO BIRANGIRIYE HANO === */
+
+    </style>
+</head>
+<body>
+
+    <div class="calculator">
+                <video autoplay loop muted plays-inline class="video-bg1">
+            <source src="background/video2.mp4" type="video/mp4">
+        </video>
+        <input type="text" id="display" disabled>
+
+        <div class="buttons">
+            
+           <a href="index7.html"> <button class="home-btn">Home</button></a>
+            <button onclick="appendToDisplay('(')">(</button>
+            <button onclick="appendToDisplay(')')">)</button>
+            <button onclick="appendToDisplay('sin(')">cos</button>
+            <button onclick="appendToDisplay('cos(')">sin</button>
+            <button onclick="appendToDisplay('tan(')">tan</button>
+
+            <button onclick="appendToDisplay('log(')">log</button>
+            <button onclick="appendToDisplay('ln(')">ln</button>
+            <button onclick="appendToDisplay('sqrt(')">√</button>
+            <button onclick="appendToDisplay('**2')">x²</button>
+            <button onclick="appendToDisplay('**')">xʸ</button>
+
+            <button onclick="appendToDisplay('7')">7</button>
+            <button onclick="appendToDisplay('8')">8</button>
+            <button onclick="appendToDisplay('9')">9</button>
+            <button class="control" onclick="deleteLast()">DEL</button>
+            <button class="control" onclick="clearDisplay()">AC</button>
+
+            <button onclick="appendToDisplay('4')">4</button>
+            <button onclick="appendToDisplay('5')">5</button>
+            <button onclick="appendToDisplay('6')">6</button>
+            <button class="operator" onclick="appendToDisplay('*')">×</button>
+            <button class="operator" onclick="appendToDisplay('/')">÷</button>
+
+            <button onclick="appendToDisplay('1')">1</button>
+            <button onclick="appendToDisplay('2')">2</button>
+            <button onclick="appendToDisplay('3')">3</button>
+            <button class="operator" onclick="appendToDisplay('+')">+</button>
+            <button class="operator" onclick="appendToDisplay('-')">−</button>
+
+            <button onclick="appendToDisplay('0')">0</button>
+            <button onclick="appendToDisplay('.')">.</button>
+            <button onclick="appendToDisplay('Math.PI')">π</button>
+            <button class="equals" onclick="calculateResult()">=</button>
+        </div>
+    </div>
+
+    <script>
+        // Get the display element
+        const display = document.getElementById('display');
+
+        // Function to append a value to the display
+        function appendToDisplay(value) {
+            display.value += value;
+        }
+
+        // Function to clear the entire display
+        function clearDisplay() {
+            display.value = '';
+        }
+
+        // Function to delete the last character
+        function deleteLast() {
+            display.value = display.value.slice(0, -1);
+        }
+
+        // === FUNCTION NSHYA YA 'HOME' ===
+        function goHome() {
+            // Iyi function ihita isubiza page hejuru. 
+            // Ushobora guhindura '#' ugashyiramo 'index.html' niba ufite indi page.
+            location.href = '#';
+        }
+        // === FUNCTION NSHYA IRANGIRIYE HANO ===
+
+        // Function to calculate the result
+        function calculateResult() {
+            try {
+                // Get the expression from the display
+                let expression = display.value;
+
+                // Replace user-friendly functions with JavaScript's Math object equivalents
+                expression = expression.replace(/sin\(/g, 'Math.sin(');
+                expression = expression.replace(/cos\(/g, 'Math.cos(');
+                expression = expression.replace(/tan\(/g, 'Math.tan(');
+                expression = expression.replace(/log\(/g, 'Math.log10(');
+                expression = expression.replace(/ln\(/g, 'Math.log(');
+                expression = expression.replace(/sqrt\(/g, 'Math.sqrt(');
+                
+                // Note: JavaScript's trig functions (sin, cos, tan) expect
+                // values in RADIANS, not degrees.
+
+                // Use new Function() for safer evaluation than eval()
+                // It evaluates the string in the global scope
+                const result = new Function('return ' + expression)();
+
+                // Display the result
+                display.value = result;
+
+            } catch (error) {
+                // If there's an error in the expression
+                display.value = 'Error';
+            }
+        }
+    </script>
+
+</body>
+</html>

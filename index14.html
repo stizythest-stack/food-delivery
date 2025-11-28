@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PINTOL AI - FOOD DELIVERY</title>
+    <link rel="icon" href="logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    
+    <style>
+        /* Global Styles for DeepSeek/Dark Theme */
+        :root {
+            --primary-color: rgb(167, 121, 121); /* title ya ai */
+            --secondary-color: #0f0ff1; /* Deep Indigo Blue (Original but mostly used for message background) */
+            --pintol-bg: #8c9191; /* AI Icon Background */
+            --user-bg: #bb3d3d; /* User Message Background */
+            --text-color: #fbfbff; /* White/Off-white text color */
+            --container-width: 900px;
+            --input-bg: rgb(114, 30, 30); /* Header/footer Input */
+            --border-color: #080808; /* Border color */
+            --body-bg: #c2a6a6; /* Body Background */
+            --chat-bg: #202020; /* Professional Chat Window Background aho sms ziba display */
+            --ai-msg-bg: #18912c; /* AI Message Background (Slightly Lighter Dark Grey) */
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--body-bg);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+        }
+
+        /* Video Background */
+        .video-bg1 {
+            position: fixed; /* Use fixed for better covering */
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1;
+            object-fit: cover;
+        }
+
+        /* Main Container */
+        .container {
+            width: 95%;
+            max-width: var(--container-width);
+            /* Updated container background to be transparent or match the theme better */
+            background: rgba(15, 15, 241, 0.2); 
+            backdrop-filter: blur(5px); /* Optional: Adds a cool glass effect */
+            box-shadow: 0 8px 30px rgba(170, 167, 167, 0.5);
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            height: 90vh;
+            border: 2px solid var(--border-color);
+        }
+
+        /* Header */
+        header {
+            background-color: var(--input-bg);
+            padding: 20px;
+            text-align: center;
+            border-bottom: 2px solid var(--border-color);
+        }
+
+        header h1 {
+            margin-bottom: 5px;
+            font-size: 2.5em;
+            color: var(--primary-color);
+            text-shadow: 0 0 5px rgb(136, 71, 71);
+        }
+        header p {
+            margin: 0;
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        /* PINTOL Icon */
+        .pintol-icon {
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: var(--primary-color); 
+            color: #000; /* Dark text for light background */
+            text-align: center;
+            line-height: 30px;
+            font-weight: bold;
+            font-size: 1.2em;
+            margin-right: 10px;
+            box-shadow: 0 0 10px var(--primary-color);
+            flex-shrink: 0;
+        }
+        .pintol-icon-container {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px; /* Reduced space */
+            font-size: 1.1em;
+            color: var(--primary-color);
+        }
+
+        /* ------------------------------------------- */
+        /* --- PROFESSIONAL CHAT WINDOW STYLES --- */
+        /* ------------------------------------------- */
+        
+        /* Chat Window: Improved background and flow */
+        .chat-window {
+            flex-grow: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: var(--chat-bg); 
+            border-bottom: 2px solid var(--border-color); 
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.5); 
+        }
+
+        /* Scrollbar Styling: Modern and subdued */
+        .chat-window::-webkit-scrollbar { 
+            width: 8px; 
+        }
+        .chat-window::-webkit-scrollbar-track { 
+            background: #333; 
+        }
+        .chat-window::-webkit-scrollbar-thumb { 
+            background: var(--primary-color); 
+            border-radius: 10px; 
+            border: 2px solid var(--chat-bg); 
+        }
+        .chat-window::-webkit-scrollbar-thumb:hover {
+            background: #e0e0e0; 
+        }
+
+        /* Individual Messages: Better spacing and flow */
+        .message-container {
+            width: 100%;
+            display: flex;
+            margin-bottom: 18px; 
+            align-items: flex-end; 
+        }
+        
+        .message-container.user-msg {
+            justify-content: flex-end;
+        }
+
+        .message {
+            max-width: 80%; 
+            padding: 12px 18px; 
+            border-radius: 18px;
+            line-height: 1.5;
+            word-wrap: break-word;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3); 
+            display: inline-block;
+        }
+
+        /* PINTOL Message: Polished look with rounded corners */
+        .pintol-message {
+            background-color: rgb(168, 118, 118); 
+            color: var(--text-color);
+            margin-right: auto;
+            /* Rounded corners: Full-radius on top, clipped on bottom-left for sharp edge next to avatar */
+            border-radius: 4px 18px 18px 18px; 
+            border-left: 4px solid var(--primary-color); 
+        }
+
+        /* User Message: Clearer distinction with rounded corners */
+        .user-message {
+            background-color: var(--user-bg);
+            color: var(--text-color);
+            margin-left: auto;
+            /* Rounded corners: Full-radius on top, clipped on bottom-right for sharp edge */
+            border-radius: 18px 4px 18px 18px; 
+        }
+        
+        /* Loading/Searching Indicator */
+        .loading-message {
+            background-color: #3b3b3b;
+            color: #ccc;
+            font-style: italic;
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: fit-content;
+        }
+
+        /* Sources/Citations */
+        .sources {
+            margin-top: 10px;
+            border-top: 1px solid #c92020;
+            padding-top: 5px;
+            font-size: 0.8em;
+            color: #ccc;
+        }
+
+        .sources a {
+            color: #b39ddb; /* Light purple link */
+            text-decoration: none;
+            display: block;
+            margin-top: 3px;
+        }
+
+        .sources a:hover {
+            text-decoration: underline;
+        }
+
+        /* Chat Input Form */
+        .chat-input {
+            display: flex;
+            padding: 15px;
+            background-color: var(--input-bg);
+            border-top: 2px solid rgb(10, 10, 10);
+        }
+
+        #user-input {
+            flex-grow: 1;
+            padding: 12px 18px;
+            border: 1px solid #11fc09;
+            border-radius: 25px;
+            font-size: 1.05em;
+            margin-right: 12px;
+            background-color: #333232;
+            color: var(--text-color);
+            outline: none;
+        }
+
+        #send-btn {
+            background-color: red; 
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 1.05em;
+            transition: background-color 0.2s, transform 0.1s;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 0 15px rgb(197, 139, 139);
+        }
+
+        #send-btn:hover {
+            background-color: #555352; 
+            transform: translateY(-1px);
+        }
+        #send-btn:active {
+            transform: translateY(0);
+        }
+        #send-btn:disabled {
+            background-color: #444;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+    <video autoplay loop muted plays-inline class="video-bg1">
+        <source src="background/video2.mp4" type="video/mp4" higth="">
+    </video>
+    <div class="container">          
+        <header>
+            <h1>PINTOL AI</h1>
+            <p>Welcome to my AI.</p>
+        </header>
+
+        <div class="chat-window" id="chat-window">
+            <div class="message-container">
+                <div class="message pintol-message">
+                    <div class="pintol-icon-container">
+                        <span class="pintol-icon">P</span>
+                        <strong>PINTOL AI:</strong>
+                    </div>
+                    <p>Muraho! Nitwa PINTOL. Ndi umufasha wawe w'ubwenge buhangano nashizweho muku kunganira.mbaza ikibazo icyo aricyo cyose.</p>
+                    <p>Hello! I'm PINTOL. I'm your intelligent assistant. Ask any question you have.</p>
+                </div>
+            </div>
+        </div>
+
+        <form id="chat-form" class="chat-input">
+            <input type="text" id="user-input" placeholder="ASK YOUR question..." required>
+            <button type="submit" id="send-btn">
+                <i class="fas fa-search"></i> ASK
+            </button>
+        </form>
+    </div>
+
+    <script>
+        // Aho ushira API Key Yawe (Insertion Point)
+        // INAMA IKOMEYE: Ntukoreshe API Key yawe y'ukuri hano mu buryo bweruye mu rubuga rugaragara (Frontend). 
+        // API Key is required for the Gemini API call. (Note: The key below is a placeholder and will not work.)
+        const apiKey = "AIzaSyBAkuazxDT05TuHtFUNWvTgKLDauzpPlLc"; 
+        
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            const chatForm = document.getElementById('chat-form');
+            const userInput = document.getElementById('user-input');
+            const chatWindow = document.getElementById('chat-window');
+            const sendBtn = document.getElementById('send-btn');
+            const maxRetries = 5;
+
+            chatForm.addEventListener('submit', function(e) {
+                e.preventDefault(); 
+                const message = userInput.value.trim();
+
+                if (message) {
+                    // 1. Display user message
+                    appendMessage(message, 'user-message');
+                    userInput.value = '';
+                    userInput.disabled = true;
+                    sendBtn.disabled = true;
+                    
+                    // 2. Call the AI with search grounding
+                    getPintolResponse(message);
+                }
+            });
+
+            /**
+             * Adds a new message (text and type) to the chat window.
+             */
+            function appendMessage(text, type, sources = []) {
+                const messageContainer = document.createElement('div');
+                messageContainer.classList.add('message-container');
+                if (type === 'user-message') {
+                    messageContainer.classList.add('user-msg');
+                }
+
+                const messageDiv = document.createElement('div');
+                // Note: The message type for the AI response is 'pintol-message' based on the CSS.
+                const messageTypeClass = type === 'pintol-message' ? 'pintol-message' : type;
+                
+                messageDiv.classList.add('message', messageTypeClass);
+                
+                // Add icon for PINTOL's messages
+                if (type === 'pintol-message') {
+                    const iconContainer = document.createElement('div');
+                    iconContainer.classList.add('pintol-icon-container');
+                    iconContainer.innerHTML = '<span class="pintol-icon">P</span> <strong>PINTOL AI:</strong>';
+                    messageDiv.appendChild(iconContainer);
+                }
+
+                // Add the text content
+                const p = document.createElement('p');
+                // Replace newline characters with <br> for HTML rendering
+                p.innerHTML = text.replace(/\n/g, '<br>'); 
+                messageDiv.appendChild(p);
+
+                // Add source attribution if available
+                if (sources.length > 0) {
+                    const sourcesDiv = document.createElement('div');
+                    sourcesDiv.classList.add('sources');
+                    sourcesDiv.innerHTML = '<strong>Inkomoko (Sources):</strong>';
+                    sources.forEach(source => {
+                        const link = document.createElement('a');
+                        link.href = source.uri;
+                        link.target = '_blank';
+                        link.textContent = source.title || source.uri;
+                        sourcesDiv.appendChild(link);
+                    });
+                    messageDiv.appendChild(sourcesDiv);
+                }
+                
+                messageContainer.appendChild(messageDiv);
+                chatWindow.appendChild(messageContainer);
+                chatWindow.scrollTop = chatWindow.scrollHeight; 
+            }
+
+            /**
+             * Generates the response using the Gemini API with Google Search grounding.
+             */
+            async function getPintolResponse(userQuery) {
+                let loadingElement; 
+
+                // Show Loading Message (PINTOL is searching)
+                loadingElement = appendLoadingMessage("PINTOL GENERATING... (PINTOL is searching...)");
+
+                try {
+                    // System Prompt: Mentions GROUP 1 as creator.
+                    const systemPrompt = "You are PINTOL, an intelligent problem-solving assistant created by GROUP 1, who is also known as FOOD DELIVERY. You are fluent in Kinyarwanda and English. If a user asks who created you or who made you, you MUST state that your creator is Group 1. When answering, first perform a Google search. Use the search results to provide a quick, efficient, and factual answer. If the user asks in Kinyarwanda, respond fully in Kinyarwanda using the context of the search results.";
+                    
+                    const payload = {
+                        contents: [{ parts: [{ text: userQuery }] }],
+                        tools: [{ "google_search": {} }], 
+                        systemInstruction: {
+                            parts: [{ text: systemPrompt }]
+                        },
+                    };
+
+                    for (let attempt = 0; attempt < maxRetries; attempt++) {
+                        const response = await fetch(apiUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify(payload)
+                        });
+
+                        if (response.ok) {
+                            const result = await response.json();
+                            const candidate = result.candidates?.[0];
+
+                            if (candidate && candidate.content?.parts?.[0]?.text) {
+                                // Extract the generated text and sources
+                                const text = candidate.content.parts[0].text;
+                                let sources = [];
+                                const groundingMetadata = candidate.groundingMetadata;
+                                if (groundingMetadata && groundingMetadata.groundingAttributions) {
+                                    sources = groundingMetadata.groundingAttributions
+                                        .map(attribution => ({
+                                            uri: attribution.web?.uri,
+                                            title: attribution.web?.title,
+                                        }))
+                                        .filter(source => source.uri && source.title); 
+                                }
+
+                                // Remove loading message and display final answer
+                                loadingElement.parentElement.remove(); 
+                                appendMessage(text, 'pintol-message', sources); // Use 'pintol-message' type
+                                return;
+                            }
+                        } else if (response.status === 429) {
+                            // Too Many Requests, wait and retry (Exponential Backoff)
+                            const delay = Math.pow(2, attempt) * 1000;
+                            await new Promise(resolve => setTimeout(resolve, delay));
+                        } else {
+                            throw new Error(`API Error: Status ${response.status}`);
+                        }
+                    }
+                    // If all retries fail
+                    throw new Error("Failed to get response after multiple retries.");
+
+                } catch (error) {
+                    console.error("PINTOL AI Error:", error);
+                    if (loadingElement) loadingElement.parentElement.remove();
+                    const errorMessage = "PINTOL yagize ikibazo mu gushakisha rebe niba internet yawe ifunguye. Nyamuneka gerageza kongera kubaza nyuma gato. (PINTOL encountered a search error or failed to check your internet. Please try asking again shortly.)";
+                    appendMessage(errorMessage, 'pintol-message');
+                } finally {
+                    // Re-enable input regardless of success/failure
+                    userInput.disabled = false;
+                    sendBtn.disabled = false;
+                    userInput.focus();
+                }
+            }
+            
+            /**
+             * Helper function to append a temporary loading message.
+             */
+            function appendLoadingMessage(text) {
+                const messageContainer = document.createElement('div');
+                messageContainer.classList.add('message-container');
+                const loadingDiv = document.createElement('div');
+                loadingDiv.classList.add('message', 'loading-message');
+                loadingDiv.textContent = text;
+                messageContainer.appendChild(loadingDiv);
+
+                chatWindow.appendChild(messageContainer);
+                chatWindow.scrollTop = chatWindow.scrollHeight;
+                return loadingDiv;
+            }
+        });
+    </script>
+</body>
+</html>

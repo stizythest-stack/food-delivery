@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You for Your Visit!</title>
+    <link rel="icon" href="logo.png" type="image/x-icon">
+    <!-- Load Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        // Configure Tailwind to use Inter font for a modern look
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    },
+                    keyframes: {
+                        // Simple bounce animation for the button
+                        bounce: {
+                            '0%, 100%': { transform: 'translateY(-5%)' },
+                            '50%': { transform: 'translateY(0)' },
+                        }
+                    },
+                    animation: {
+                        bounce: 'bounce 1.5s ease-in-out infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Custom CSS to ensure video covers the entire viewport */
+        .video-bg {
+            object-fit: cover;
+            width: 100vw;
+            height: 100vh;
+            position: fixed;
+            top: 0;
+            left: 0;
+            /* Ensure the video is behind all content */
+            z-index: -10;
+        }
+
+        /* Gradient overlay for better text readability */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            /* Dark semi-transparent overlay */
+            background: rgba(0, 0, 0, 0.4); 
+            z-index: -5;
+        }
+    </style>
+</head>
+<body class="font-sans antialiased">
+
+    <!-- Background Video (Muted, Autoplay, Loop) -->
+    <!-- IMPORTANT: Replace the 'source src' URL with a link to your own video file (MP4 format recommended). -->
+    <video class="video-bg" autoplay loop muted poster="background/wel.mp4">
+        <!-- Placeholder video source. This video shows a business team meeting. -->
+        <source src="background/wel.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <!-- Overlay for text readability -->
+    <div class="overlay"></div>
+
+    <!-- Main Content: Centered Thank You Message -->
+    <main class="flex items-center justify-center min-h-screen relative z-10 p-4">
+        <div class="bg-white/10 backdrop-blur-lg p-10 md:p-16 rounded-3xl shadow-2xl max-w-2xl text-center border border-white/20 transform hover:scale-[1.02] transition duration-500">
+            <h1 class="text-4xl md:text-6xl font-extrabold text-white mb-4 tracking-tight">
+                Thank You for Your Trust!
+            </h1>
+            <p class="text-xl md:text-2xl text-gray-200 leading-relaxed">
+                nibyagaciro gikorana namwe ibyomwatumije birabageraho mukanya.
+            </p>
+            <div class="mt-8">
+                <a href="#" class="inline-block px-8 py-3 text-lg font-semibold text-white bg-blue-600 rounded-full hover:bg-blue-700 transition duration-300 shadow-xl" onclick="alert('deliverystoped!!')">
+                    stop delivery
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom-Left "Call It Back" Button -->
+    <div class="fixed bottom-8 left-8 z-20">
+       <a href="index.HTML"> <button id="callBackButton"
+                class="bg-red-600 text-white font-bold py-4 px-8 rounded-full shadow-2xl transition duration-300 hover:bg-red-700 hover:scale-105 active:shadow-inner text-xl uppercase tracking-wider animate-bounce">
+            Call It Back
+        </button></a>
+    </div>
+
+</body>
+</html>

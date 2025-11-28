@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOOD DELIVERY - Profile</title>
+    <link rel="icon" href="logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<style>
+    :root {
+    --primary-color: #b12e2e; /* radius na some text */
+    --secondary-color: #972929; /* hejuru nokuri footer */
+    --bg-light: #3d3d3d; /* bg color */
+    --text-dark: #0c0b0b; /* text color */
+    --success-color: #28a745; /* inyandiko ya Completed color  */
+    --shadow-light: 0 4px 12px rgba(204, 31, 31, 0.616);
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: var(--bg-light);
+    color: var(--text-dark);
+}
+
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+.header {
+    background-color: var(--secondary-color);
+    color: white;
+    padding: 30px 0;
+    box-shadow: var(--shadow-light);
+}
+
+.header h1 {
+    font-size: 2em;
+    margin: 0;
+}
+
+/* --- Profile Card Styling --- */
+.profile-card, .form-card {
+    background-color: rgb(86, 119, 101);
+    padding: 30px;
+    margin-top: 30px;
+    border-radius: 10px;
+    box-shadow: var(--shadow-light);
+}
+
+.profile-header {
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #e9ecef;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+}
+
+.profile-photo {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary-color);
+    margin-right: 25px;
+}
+
+.profile-info h2 {
+    color: var(--primary-color);
+    margin: 0 0 5px 0;
+    font-size: 1.8em;
+}
+
+.profile-info p {
+    margin: 5px 0;
+    color: #555;
+}
+
+.profile-info i {
+    color: var(--primary-color);
+    margin-right: 8px;
+}
+
+.edit-button {
+    background-color: #e42a2a;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    float: right;
+}
+
+.edit-button:hover {
+    background-color: #5a6268;
+}
+
+/* --- Form Styling --- */
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: var(--secondary-color);
+}
+
+.form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #64696e;
+    border-radius: 5px;
+    box-sizing: border-box; 
+}
+
+.save-button, .cancel-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    margin-right: 10px;
+}
+
+.save-button {
+    background-color: var(--primary-color);
+    color: white;
+}
+
+.cancel-button {
+    background-color: #6c757d;
+    color: white;
+}
+
+
+/* --- Order History Styling --- */
+.order-history-section {
+    padding: 40px 0;
+}
+
+.section-title {
+    color: var(--secondary-color);
+    font-size: 1.6em;
+    margin-bottom: 25px;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 10px;
+}
+
+.order-card {
+    background-color: rgb(139, 134, 134);
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+}
+
+.order-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px dashed #e9ecef;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
+}
+
+.order-id {
+    font-weight: bold;
+    color: var(--secondary-color);
+}
+
+.order-status {
+    padding: 5px 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.status-Completed {
+    background-color: #d4edda;
+    color: var(--success-color);
+}
+
+.status-Pending {
+    background-color: #fff3cd;
+    color: #856404;
+}
+
+.status-Cancelled {
+    background-color: #f8d7da;
+    color: #dc3545;
+}
+
+.order-details p {
+    margin: 5px 0;
+}
+
+.order-total {
+    font-weight: bold;
+    color: var(--primary-color);
+    font-size: 1.1em;
+}
+
+.no-orders {
+    text-align: center;
+    padding: 30px;
+    color: #777;
+    font-style: italic;
+    border: 1px dashed #ccc;
+    border-radius: 5px;
+}
+
+/* Footer */
+.footer {
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 50px;
+    background-color: var(--secondary-color);
+    color: white;
+    font-size: 0.9em;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+    .profile-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    .profile-photo {
+        margin: 0 0 15px 0;
+    }
+    .edit-button {
+        float: none;
+        width: 100%;
+        margin-top: 15px;
+    }
+}
+</style>
+<body>
+
+    <header class="header">
+        <div class="container">
+            <h1>Profile y'Umukiriya</h1>
+        </div>
+    </header>
+
+    <main class="container">
+        
+        <section id="editFormSection" class="section form-card" style="display:none;">
+            <h2 class="section-title"><i class="fas fa-user-edit"></i> Hindura Amakuru Yawe</h2>
+            <form id="customerForm">
+                <div class="form-group">
+                    <label for="inputName">Amazina:</label>
+                    <input type="text" id="inputName" required>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail">Email:</label>
+                    <input type="email" id="inputEmail" required>
+                </div>
+                <div class="form-group">
+                    <label for="inputPhotoUrl">Link y'Ifoto:</label>
+                    <input type="url" id="inputPhotoUrl" placeholder="Ex: https://example.com/photo.jpg">
+                </div>
+                <button type="submit" class="save-button"><i class="fas fa-save"></i> Bika Amakuru</button>
+                <button type="button" class="cancel-button" id="cancelEdit">Bireke</button>
+            </form>
+        </section>
+        
+        <section id="customer-details" class="section profile-card">
+            <div class="profile-header">
+                <img id="profilePhoto" src="placeholder-user.png" alt="Ifoto y'Umukiriya" class="profile-photo">
+                <div class="profile-info">
+                    <h2 id="customerName"></h2>
+                    <p><i class="fas fa-envelope"></i> <span id="customerEmail"></span></p>
+                    <p><i class="fas fa-id-badge"></i> ID y'Umukiriya: <span id="customerID"></span></p>
+                </div>
+            </div>
+            
+            <div class="profile-action">
+                <button class="edit-button" id="showEditForm"><i class="fas fa-user-edit"></i> Hindura Amakuru</button>
+            </div>
+        </section>
+
+        <section id="order-history" class="section order-history-section">
+            <h2 class="section-title"><i class="fas fa-history"></i> Amateka y'Ibyo Wigeze Gutumiza</h2>
+            <div id="ordersContainer">
+                </div>
+            <p id="noOrdersMessage" class="no-orders" style="display:none;">Uyu mukiriya nta kintu na kimwe aratiza.</p>
+        </section>
+
+    </main>
+
+    <footer class="footer">
+        <p>&copy; <span id="currentYear"></span> FOOD DELIVERY. Amakuru y'Igenzura.</p>
+    </footer>
+    
+    <script>
+       // 1. DATA: Amateka y'Ibyo Yatumije Byose (Order History) - Aguma hano kuko Umukiriya atayihindura muri Form
+const initialOrderData = [
+    {
+        id: "ORD-2025-001",
+        date: "2025-10-25",
+        total: 150000,
+        status: "Completed",
+        items: "Igitabo 1, Imodoka ntoya 1"
+    },
+    {
+        id: "ORD-2025-002",
+        date: "2025-11-01",
+        total: 55000,
+        status: "Pending",
+        items: "Serivisi yo Gutwara 1"
+    },
+    {
+        id: "ORD-2025-003",
+        date: "2025-11-10",
+        total: 25000,
+        status: "Cancelled",
+        items: "Ikirahure 1"
+    },
+];
+
+// Amakuru y'ibanze y'Umukiriya (Default data niba Local Storage yabuze)
+const defaultCustomerInfo = {
+    id: "CUST-0042",
+    name: "Umukiriya Mushya",
+    email: "email@example.com",
+    photoUrl: "placeholder-user.png",
+    currentYear: new Date().getFullYear(),
+};
+
+// 2. Logic yo Kuzuza Amakuru no Kubika (Dynamic Rendering & Local Storage)
+document.addEventListener('DOMContentLoaded', function() {
+    const customerForm = document.getElementById('customerForm');
+    const editFormSection = document.getElementById('editFormSection');
+    const showEditFormButton = document.getElementById('showEditForm');
+    const cancelEditButton = document.getElementById('cancelEdit');
+
+    // **A. Gukurura Amakuru Muri Local Storage**
+    function getCustomerData() {
+        const storedData = localStorage.getItem('customerProfileData');
+        if (storedData) {
+            // Kohereza JSON ibika amakuru mu buryo bwa JavaScript Object
+            const parsedData = JSON.parse(storedData);
+            // Gufata orders zidasanzwe n'umwaka biri mu buryo bw'ibanze
+            return {...parsedData, orders: initialOrderData, currentYear: defaultCustomerInfo.currentYear }; 
+        }
+        return {...defaultCustomerInfo, orders: initialOrderData};
+    }
+
+    // **B. Kugaragaza Amakuru y'Umukiriya Kuri Profile**
+    function displayProfile() {
+        const data = getCustomerData();
+        
+        document.getElementById('profilePhoto').src = data.photoUrl || 'placeholder-user.png';
+        document.getElementById('customerName').textContent = data.name;
+        document.getElementById('customerEmail').textContent = data.email;
+        document.getElementById('customerID').textContent = data.id;
+        document.getElementById('currentYear').textContent = data.currentYear;
+        
+        displayOrders(data.orders);
+    }
+    
+    // **C. Kuzuza Amateka y'Ibyo Yatumije Byose**
+    function displayOrders(orders) {
+        const ordersContainer = document.getElementById('ordersContainer');
+        ordersContainer.innerHTML = ''; 
+
+        if (orders.length === 0) {
+            document.getElementById('noOrdersMessage').style.display = 'block';
+            return; 
+        }
+        document.getElementById('noOrdersMessage').style.display = 'none';
+
+        orders.forEach(order => {
+            const orderCard = document.createElement('div');
+            orderCard.className = 'order-card';
+            
+            // Kwandika Amafaranga mu Kinyarwanda
+            const formattedTotal = new Intl.NumberFormat('rw-RW', {
+                style: 'currency',
+                currency: 'RWF',
+                minimumFractionDigits: 0
+            }).format(order.total);
+
+            orderCard.innerHTML = `
+                <div class="order-header">
+                    <span class="order-id"># ${order.id}</span>
+                    <span class="order-date"><i class="far fa-calendar-alt"></i> ${order.date}</span>
+                    <span class="order-status status-${order.status}">${order.status}</span>
+                </div>
+                <div class="order-details">
+                    <p><strong>Ibyari Bitumijwe:</strong> ${order.items}</p>
+                    <p class="order-total">Igiciro Cyose: ${formattedTotal}</p>
+                </div>
+            `;
+            ordersContainer.appendChild(orderCard);
+        });
+    }
+
+    // **D. Logic yo Gukoresha Form**
+    
+    // 1. Kugaragaza Form
+    showEditFormButton.addEventListener('click', () => {
+        const data = getCustomerData();
+        // Kuzuza amakuru y'umukiriya muri form mbere yo kuyigaragaza
+        document.getElementById('inputName').value = data.name;
+        document.getElementById('inputEmail').value = data.email;
+        document.getElementById('inputPhotoUrl').value = data.photoUrl === 'placeholder-user.png' ? '' : data.photoUrl; // Gutoza placeholder
+        
+        editFormSection.style.display = 'block';
+        document.getElementById('customer-details').style.display = 'none'; 
+        document.getElementById('order-history').style.display = 'none'; // Hisha amateka
+    });
+
+    // 2. Guhisha Form (Bireke)
+    cancelEditButton.addEventListener('click', () => {
+        editFormSection.style.display = 'none';
+        document.getElementById('customer-details').style.display = 'block'; 
+        document.getElementById('order-history').style.display = 'block'; 
+    });
+
+    // 3. Kubika Amakuru (Submit Form)
+    customerForm.addEventListener('submit', function(e) {
+        e.preventDefault(); 
+
+        const updatedData = {
+            id: getCustomerData().id, 
+            name: document.getElementById('inputName').value,
+            email: document.getElementById('inputEmail').value,
+            photoUrl: document.getElementById('inputPhotoUrl').value || 'placeholder-user.png', // Niba nta kintu cyashyizwemo, koresha placeholder
+        };
+        
+        // Kubika amakuru mashya muri Local Storage
+        localStorage.setItem('customerProfileData', JSON.stringify(updatedData));
+
+        // Gusubira kugaragaza Profile
+        editFormSection.style.display = 'none';
+        document.getElementById('customer-details').style.display = 'block';
+        document.getElementById('order-history').style.display = 'block'; 
+        
+        displayProfile(); // Kugaragaza amakuru mashya
+    });
+    
+    // Tanga amakuru ya mbere (Start)
+    displayProfile();
+});
+    </script>
+</body>
+</html>

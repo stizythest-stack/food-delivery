@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>about us - FOOD DELIVERY</title>
+    <link rel="icon" href="logo.png" type="image/x-icon">
+    <style>
+      :root {
+            --primary: #cc3a27; /* ihindura text 2 zokuri footer ubwoko na twandikire */
+            --secondary: #b12828; /* hover ya home button  */
+            --dark: #141414; /* ihindura hejuru ahari food delivery  */
+            --light: #fcfffc; /* ihindura text ivuga abo turibo */
+            --gray: #84838f; /* about us text color  */
+            --light-dark: #2c2c2c; /* bg yaho text ya aboturibo na footer  */
+            --white: rgb(255, 255, 255);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+        .video-bg1{
+               position: absolute;
+            right: 0;
+            bottom: 0;
+            z-index: -1;           
+        }
+        
+        /* Header */
+        header {
+            background: var(--dark);
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .logo-icon {
+            font-size: 32px;
+            color: var(--primary);
+        }        
+        /* Registration Form */
+        .registration-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            background-image:url(background/video-bg.mp4);
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .registration-form {
+            background: var(--light-dark);
+            width: 100%;
+            max-width: 500px;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(175, 168, 168, 0.582); /* shadow ya form  */
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .form-header h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: rgb(172, 30, 30); /* title ya about us  */
+        }
+        
+        .form-header p {
+            color: var(--gray);
+        }       
+        /* Footer */
+        footer {
+            background: var(--light-dark);
+            padding: 30px 5%;
+            margin-top: auto;
+        }
+        
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+        
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+        }
+        
+        .footer-column ul {
+            list-style: none;
+        }
+        
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-column a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-column a:hover {
+            color: var(--light);
+        }
+        
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .social-icons a {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--dark);
+            border-radius: 50%;
+            color: var(--light);
+            transition: background 0.3s;
+        }
+        
+        .social-icons a:hover {
+            background: var(--primary);
+        }
+        
+        .copyright {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray);
+            color: var(--gray);
+        }
+        .button1{
+            background-color: red; /* home button bg color  */
+            color: white; /* text color */
+            border: none;
+            border-radius: 8px;           
+            cursor: pointer;
+             width: 100%;
+            padding: 14px;
+             font-weight: bold;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+         .button1:hover {
+            background: var(--secondary);
+        }
+        
+        .button1:disabled {
+            background: var(--gray);
+            cursor: not-allowed;
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            nav ul {
+                display: none;
+            }
+            
+            .registration-form {
+                padding: 30px 20px;
+            }
+            
+            .form-row {
+                flex-direction: column;
+                gap: 0;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .registration-form {
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="logo">
+            <div class="logo-icon"><i class="fa fa-film"></i></div>
+            <h1><p style="color: #d84925;">FOOD<p style="color: rgb(255, 255, 255);">DELIVERY</p></h1>
+        </div>
+       <a href="index7.html"><button class="button1">HOME</button></a> 
+    </header>
+    <!-- Registration Form -->
+    <section class="registration-container">
+        <video  autoplay loop muted plays-inline class="video-bg1">
+        <source src="background/video2.mp4" type="video/mp4" higth="">
+         </video>
+        <div class="registration-form">
+            <div class="form-header">
+                <h2>This website is created by Group 1</h2>
+                <p>ABOUT US</p>
+            </div>
+            
+            <form id="registrationForm">
+             <p>
+             iyi web site yakozwe na group 1 Urubuga rwacu rwa food delivery rworohereza abakiriya bacu kubona ibiryo byiza mu buryo bwihuse kandi bworoshye. Uburyo dukoramo buroroshye: ukoresha urubuga rwacu cyangwa application, ugahitamo resitora ukunda n'ibiryo ushaka. Itegeko ryawe rihita ryoherezwa muri resitora, nabo bagahita babitegura. Hanyuma, umukozi wacu wo kubizanira araguhitana akabikugezaho vuba na bwangu. Dufite gahunda yo kohereza iteguye neza kandi ikoranabuhanga rigezweho, bituma serivisi zacu zihuta cyane, tukagira intego yo kukugezaho ibiryo bishyuha kandi bitinze, mu gihe gito gishoboka.
+             </p>
+            </form>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3><p style="color: rgb(197, 29, 29);">FOOD<p style="color: rgb(255, 255, 255);">DELIVERY</p></h3>
+                <p>TUMIZA IBIRYO BYIZA KANDI BYIHUSE.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>UBWOKO</h3>
+                <ul>
+                    <li><a href="#">Raice</a></li>
+                    <li><a href="#">Ama-Burger</a></li>
+                    <li><a href="#">Inkoko</a></li>
+                    <li><a href="#">Ifiriti</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Twandikire</h3>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> Kigali, Rwanda</li>
+                    <li><i class="fas fa-phone"></i> +250 794213145</li>
+                    <li><i class="fas fa-envelope"></i> FOODDELIVERY@gmail.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>© 2025 FOOD DELIVERY. Developed by Group 1.</p>
+        </div>
+    </footer>
+
+</body>
+</html>

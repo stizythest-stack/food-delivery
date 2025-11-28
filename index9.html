@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="logo.png" type="image/x-icon">
+    <title>Welcome to FOOD DELIVERY</title>
+    
+    <style>
+        /* CSS YO GUKORA VIDEO BACKGROUND N'AMABARA Y'UMUTUKU N'UMWERU */
+        :root {
+            --primary-red: #b62f2f; /* Umutuku wo ku ibuto rya welcome  */
+            --white-text: #ffffff; /*ibararynyandiko*/
+            --overlay-color: rgba(0, 0, 0, 0.5); /* ibara rya background kuri video  */
+            --light-bg: rgba(160, 100, 100, 0.95); /* ibara rya background kuri forrm */
+            --dark-border: #292626; /* ibara rya txt kuri form */
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            overflow: hidden; 
+            color: var(--white-text);
+        }
+
+        /* I-VIDEO YUZUYE SCREEN YOSE (FULL SCREEN VIDEO) */
+        #video-background {
+            position: fixed;
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -100;
+            object-fit: cover; 
+            filter: brightness(0.7); /* Slightly darker video */
+        }
+
+        /* IGIHUGUTU CYO HEJURU (OVERLAY) */
+        .overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: var(--overlay-color);
+            z-index: -50;
+        }
+
+        /* IMYANDIKIRE N'IBICE BYO HAGATI (CENTERED CONTENT) */
+        .welcome-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            z-index: 100;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .welcome-content h1 {
+            font-size: 4em;
+            margin-bottom: 0.2em;
+            text-transform: uppercase;
+            color: var(--white-text);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8); /* shadow kuri text ya welcome */
+        }
+
+        .welcome-content p {
+            font-size: 1.5em;
+            margin-bottom: 2em;
+            color: var(--white-text);
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7); /* shadow kuri text ya welcome munsi kuri <p> */
+        }
+
+        /* BUTTON Y'UMUTUKU N'UMWERU (WELCOME BUTTON) */
+        #welcome-button {
+            padding: 15px 40px;
+            font-size: 1.3em;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            border: 3px solid var(--white-text); /* border yo ku buto ya welcome */
+            background-color: var(--primary-red); /* ibara yo ku buto ya welcome */
+            color: var(--white-text);
+            border-radius: 50px; 
+            transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4); /* shadow yo ku buto ya welcome */
+        }
+
+        #welcome-button:hover {
+            background-color: #9e2a2a;
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        /* --- FORM STYLING (UBUTUMIRE BW'IBIRYO) --- */
+        .order-form-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 150;
+            background: var(--light-bg); /* ibara yo kuri background ya form  */
+            padding: 30px 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-width: 450px;
+            width: 90%;
+            color: var(--dark-border); /* Dark text inside the form */
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s, visibility 0.5s;
+        }
+
+        .order-form-container.visible {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .order-form-container h2 {
+            font-size: 1.8em;
+            color: var(--primary-red); /* text yohejuru yakarongo */
+            text-align: center;
+            margin-bottom: 25px;
+            border-bottom: 2px solid #ddd; /* karongo hejuru ya from */
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        .address-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .address-group input {
+            flex-grow: 1;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-size: 1em;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: var(--primary-red);
+            outline: none;
+            box-shadow: 0 0 5px rgba(182, 47, 47, 0.5);
+        }
+
+        /* Geolocation Button */
+        #get-location-button {
+            background-color: #750d0d; /* Google Blue */
+            color: var(--white-text);
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            padding: 0 15px; /* Adjust padding for height match */
+            transition: background-color 0.3s;
+            white-space: nowrap;
+        }
+
+        #get-location-button:hover {
+            background-color: #6b0e0e;
+        }
+        
+        /* Submit Button */
+        #submit-order-button {
+            width: 100%;
+            padding: 15px;
+            background-color: var(--primary-red);
+            color: var(--white-text);
+            font-size: 1.1em;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+            margin-top: 10px;
+        }
+
+        #submit-order-button:hover {
+            background-color: #9e2a2a;
+            transform: translateY(-2px);
+        }
+
+        /* Close Button */
+        .close-button {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 1.5em;
+            cursor: pointer;
+            color: var(--primary-red);
+            transition: color 0.3s;
+        }
+
+        .close-button:hover {
+            color: #333;
+        }
+
+        /* Hide class */
+        .hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        /* Kuri Telephone Ntoya (Mobile Responsiveness) */
+        @media (max-width: 600px) {
+            .welcome-content h1 {
+                font-size: 2.5em;
+            }
+            .welcome-content p {
+                font-size: 1.1em;
+            }
+            #welcome-button {
+                padding: 12px 30px;
+                font-size: 1.1em;
+            }
+            .order-form-container {
+                padding: 20px;
+            }
+            .address-group {
+                flex-direction: column;
+                gap: 5px;
+            }
+            #get-location-button {
+                padding: 12px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <video autoplay muted loop id="video-background">
+        <!-- Placeholder video source. Replace "background/wel.mp4" with your actual video path/URL -->
+        <source src="background/wel.mp4" type="video/mp4">
+        Your browser does not support the video tag.
+    </video>
+
+    <div class="overlay"></div>
+
+    <!-- Welcome Content (Hidden when form appears) -->
+    <div class="welcome-content" id="welcome-content">
+        <h1>Muryoherwe N'Ubudasa</h1>
+        <p>Kanda hano winjire mu isi y'ibiryo bihebuje.</p>
+        
+        <button id="welcome-button">
+            IKaze (Welcome)
+        </button>
+    </div>
+
+    <!-- Order Form Container (Hidden initially) -->
+    <div class="order-form-container" id="order-form-container">
+        <span class="close-button" id="close-form-button">&times;</span>
+        <h2>person ditail</h2>
+        <form id="order-form">
+            
+            <div class="form-group">
+                <label for="name">Amazina Yanyu (Your Name)</label>
+                <input type="text" id="name" name="name" required placeholder="amazina yombi">
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Nimero Ya Terefone (Phone Number)</label>
+                <input type="tel" id="phone" name="phone" required placeholder="+250 7** *** ***">
+            </div>
+
+            <div class="form-group">
+                <label for="address">Aderesi Y'iwawe (Delivery Location - GPS Mandatory)</label>
+                <div class="address-group">
+                    <!-- Akanya ko kwandikira aderesi kakuweho, gashyizwemo readonly kugira ngo kerekane GPS gusa -->
+                    <input type="text" id="address" name="address" readonly placeholder="Kanda Kuri Aderesi">
+                    <!-- Button for Geolocation -->
+                    <button type="button" id="get-location-button">
+                        <span id="location-button-text">Address</span>
+                    </button>
+                </div>
+                <!-- Hidden input to store GPS coordinates, this is now the REQUIRED data point -->
+                <input type="hidden" id="coordinates" name="coordinates">
+            </div>
+            
+            <!-- Iki gice cyari Ibiryo Mutumije (Order Details) cyakuwemo nk'uko wabisabye -->
+
+            <button type="submit" id="submit-order-button">
+                Ohereza (Send)
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const welcomeContent = document.getElementById('welcome-content');
+        const welcomeButton = document.getElementById('welcome-button');
+        const orderFormContainer = document.getElementById('order-form-container');
+        const closeFormButton = document.getElementById('close-form-button');
+        const orderForm = document.getElementById('order-form');
+        const submitButton = document.getElementById('submit-order-button');
+        
+        // New elements for Geolocation
+        const getLocationButton = document.getElementById('get-location-button');
+        const locationButtonText = document.getElementById('location-button-text');
+        const addressInput = document.getElementById('address');
+        const coordinatesInput = document.getElementById('coordinates');
+        const primaryRedColor = '#b62f2f'; // Primary Red color from CSS variable
+        const googleBlueColor = '#1a73e8'; // Default Geolocation Button color
+
+        // Function to show the form and hide the welcome screen
+        welcomeButton.onclick = function() {
+            welcomeContent.classList.add('hidden');
+            orderFormContainer.classList.add('visible');
+        };
+
+        // Function to hide the form and show the welcome screen (if needed)
+        closeFormButton.onclick = function() {
+            orderFormContainer.classList.remove('visible');
+            welcomeContent.classList.remove('hidden');
+        };
+        
+        // --- GEOLOCATION LOGIC (GPS) ---
+
+        getLocationButton.onclick = function() {
+            if (!navigator.geolocation) {
+                addressInput.value = "Ikosa: Geolocation Ntiboneka. (Error: Geolocation not available.)";
+                return;
+            }
+
+            // Start loading state
+            locationButtonText.textContent = "Turimo Gushakisha...";
+            addressInput.placeholder = "Turimo Gushakisha Aho Uri...";
+            addressInput.value = ""; // Clear previous value
+            addressInput.style.cursor = 'default';
+            getLocationButton.style.backgroundColor = 'orange';
+
+
+            navigator.geolocation.getCurrentPosition(success, error, {
+                enableHighAccuracy: true,
+                timeout: 10000, // 10 seconds
+                maximumAge: 0
+            });
+        };
+
+        function success(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const mapLink = `https://www.google.com/maps?q=${lat},${lon}`;
+            
+            // 1. Store coordinates
+            coordinatesInput.value = `${lat},${lon}`;
+            
+            // 2. Update address field with a status and link (for demonstration/user convenience)
+            addressInput.value = "Aho Uri Harabonetse! Kanda hano ngo urebe muri Map.";
+            addressInput.onclick = () => window.open(mapLink, '_blank');
+            addressInput.style.cursor = 'pointer'; // Make it look clickable
+
+            // 3. Reset button text and color
+            locationButtonText.textContent = "GPS Yabonetse!";
+            getLocationButton.style.backgroundColor = 'green';
+            
+            console.log(`GPS Location: Lat ${lat}, Lon ${lon}. Google Maps URL: ${mapLink}`);
+        }
+
+        function error(err) {
+            // Clear coordinates on failure
+            coordinatesInput.value = ""; 
+            
+            // Re-enable input display and reset button on failure
+            addressInput.value = "";
+            addressInput.placeholder = "IKOSA: Kanda 'Fata Aho Ndi Ubu' Mbere. (Geolocation Error)";
+            addressInput.onclick = null; // Remove map link functionality
+            addressInput.style.cursor = 'default';
+
+            locationButtonText.textContent = "Fata Aho Ndi Ubu";
+            // Subiramo ibara rya Google Blue
+            getLocationButton.style.backgroundColor = googleBlueColor;
+            
+            console.error(`ERROR(${err.code}): ${err.message}`);
+        }
+
+        // --- HANDLE FORM SUBMISSION ---
+        orderForm.onsubmit = function(event) {
+            event.preventDefault(); // Stop the form from submitting and refreshing the page
+            
+            // Collect data
+            const name = document.getElementById('name').value;
+            const phone = document.getElementById('phone').value;
+            const coordinates = coordinatesInput.value; // Get GPS coordinates
+
+            // CHECK: Kugira ngo submission ikore, GPS igomba kuba yabonetse
+            if (!coordinates) {
+                console.error("Ikosa: Coordinates ntabwo zabonetse. Kanda 'Fata Aho Ndi Ubu' Kuri Aderesi.");
+                
+                // User feedback on submit button
+                submitButton.textContent = "IKOSA: Kanda 'Fata Aho Ndi Ubu' Mbere!";
+                submitButton.style.backgroundColor = 'red';
+                
+                // Reset button after 3 seconds
+                setTimeout(() => {
+                     submitButton.textContent = "Ohereza Ubutumire (Send Order)";
+                     submitButton.style.backgroundColor = primaryRedColor; 
+                }, 3000);
+                return; // Stop the process if no coordinates are available
+            }
+            
+            // Logging data (Only Name, Phone, and GPS are now logged)
+            console.log("=== Ubutumire Bushya Bwakiriwe (New Order Received) ===");
+            console.log(`Amazina (Name): ${name}`);
+            console.log(`Terefone (Phone): ${phone}`);
+            console.log(`Aderesi ya GPS (GPS Coordinates): ${coordinates}`);
+            console.log(`Link ya Google Maps: https://www.google.com/maps?q=${coordinates}`);
+            console.log("=========================================================");
+
+            // --- USER FEEDBACK & REDIRECTION ---
+            
+            // 1. Give immediate visual confirmation
+            submitButton.textContent = "Ohereje Neza! Murinjira... (Success! Entering...)";
+            submitButton.disabled = true;
+            submitButton.style.backgroundColor = 'green';
+            
+            // 2. Redirect the user after 1.5 seconds to the main website
+            setTimeout(() => {
+                // Turinjiza umukiriya kuri page y'ibanze. (Redirecting customer to the main page.)
+                window.location.href = "index7.html"; 
+            }, 1500); 
+        };
+    </script>
+
+</body>
+</html>

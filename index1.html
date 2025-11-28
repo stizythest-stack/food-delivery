@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Iyandikishe - FOOD DELIVERY</title>
+    <link rel="icon" href="logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        :root {
+            --primary: #a32626ff; /*  ifata uruhare runini kuma buto,text */
+            --secondary: #ce3030ff;
+            --dark: #1e1f1e; /* ifata uruhare runini kuma input no hejuru kuri foodelivery */
+            --light: #fcfffe; /* text kuma input no kuri footer */
+            --gray: #84838f; /* border no kuri text zimwwe nazimwe */
+            --light-dark: #2c2c2c; /* bg color ya form na footer */
+            --white: rgb(255, 255, 255);
+            --error: #e74c3c;
+            --success: #2ecc71;
+            --text-dark: #141414; /* Added for payment details text */
+            --text-red: #a32626ff; /* Added for payment details text */
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .video-bg1 {
+            position: fixed; /* Changed to fixed for better background coverage */
+            right: 0;
+            bottom: 0;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: -1;
+            object-fit: cover;
+        }
+
+        header {
+            background: var(--dark);
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 10;
+            position: relative;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .logo-icon {
+            font-size: 32px;
+            color: var(--primary);
+        }
+
+        .registration-container {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .registration-container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(20, 20, 20, 0.6);
+            z-index: 0;
+        }
+
+        .registration-form {
+            background: var(--light-dark);
+            width: 100%;
+            max-width: 500px;
+            border-radius: 8px;
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 2;
+        }
+
+        .form-header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .form-header h2 {
+            font-size: 2rem;
+            margin-bottom: 10px;
+            color: var(--primary);
+        }
+
+        .form-header p {
+            color: var(--gray);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 500;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 12px 15px;
+            border-radius: 4px;
+            border: 1px solid var(--gray);
+            background: var(--dark);
+            color: var(--light);
+            font-size: 1rem;
+            transition: border 0.3s;
+        }
+        
+        /* Specific styling for the payment details select to match the theme */
+        #payment-method {
+            background: var(--dark);
+            color: var(--light);
+            border: 1px solid var(--gray);
+        }
+
+        .form-group input:focus, .form-group select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        .form-row {
+            display: flex;
+            gap: 15px;
+        }
+
+        .form-row .form-group {
+            flex: 1;
+        }
+
+        .error-message {
+            color: var(--error);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .success-message {
+            color: var(--success);
+            font-size: 0.85rem;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .form-group.error input, .form-group.error select {
+            border-color: var(--error);
+        }
+
+        .form-group.success input, .form-group.success select {
+            border-color: var(--success);
+        }
+
+        .form-footer {
+            margin-top: 30px;
+        }
+
+        .form-footer button {
+            width: 100%;
+            padding: 14px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+
+        .form-footer button:hover {
+            background: var(--secondary);
+        }
+        /* Adjusted .button2 to fit the form's submit style */
+        .button2 {
+            width: 100%;
+            padding: 14px; /* Matched form submit button padding */
+            background-color: var(--primary); /* Matched form submit button color */
+            color: white;
+            border: none;
+            border-radius: 4px; /* Matched form submit button radius */
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 1rem;
+            transition: background 0.3s;
+        }
+
+        .button2:hover {
+            background: var(--secondary);
+        }
+
+        .password-toggle {
+            position: absolute;
+            right: 15px;
+            top: 45px;
+            cursor: pointer;
+            color: var(--gray);
+        }
+
+        footer {
+            background: var(--light-dark);
+            padding: 30px 5%;
+            margin-top: auto;
+            z-index: 10;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .footer-column p, .footer-column a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+            display: block; /* To make links stack */
+            margin-bottom: 8px;
+        }
+
+        .footer-column a:hover {
+            color: var(--light);
+        }
+
+        .social-icons a {
+            margin-right: 15px;
+            color: var(--light);
+            font-size: 1.5rem;
+        }
+
+        .button1 {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 4px; /* Adjusted to 4px for consistency */
+            cursor: pointer;
+            padding: 10px 16px;
+            font-weight: bold;
+            transition: background 0.3s;
+        }
+
+        .button1:hover {
+            background: var(--secondary);
+        }
+        
+        /* Styling for payment details section */
+        #payment-details {
+            background: var(--dark); /* Adjusted background color */
+            padding: 15px;
+            border-radius: 8px;
+            border: 1px solid var(--gray);
+            margin-top: 10px;
+        }
+        
+        .logo-small {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        
+        .payment-info-box {
+            color: var(--light);
+        }
+        
+        .payment-info-box strong {
+            color: var(--primary);
+        }
+        
+        .payment-info-box .text-semibold {
+            font-weight: 600;
+            color: var(--gray);
+        }
+        
+        .payment-info-box .text-red-600 {
+            color: var(--error);
+        }
+        
+        .payment-info-box .font-bold {
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .payment-info-box input {
+             background: var(--light-dark);
+             border-color: var(--primary);
+        }
+        
+        /* Adjusted form-group margin for payment transaction input */
+        .form-group.mt-4 {
+            margin-top: 1rem;
+        }
+
+
+        @media (max-width: 768px) {
+            .form-row {
+                flex-direction: column;
+            }
+            .registration-form {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <div class="logo-icon"><i class="fa fa-cutlery"></i></div>
+            <h1><span style="color: var(--primary);">FOOD</span><span style="color: white;">DELIVERY</span></h1>
+        </div>
+        <a href="index7.html"><button class="button1">HOME</button></a>
+    </header>
+
+    <section class="registration-container">
+        <video autoplay loop muted playsinline class="video-bg1">
+            <source src="background/video2.mp4" type="video/mp4">
+        </video>
+
+        <div class="registration-form">
+            <div class="form-header">
+                <h2>Iyandikishe</h2>
+                <p>Tangira gutumiza ibiryo byiza!</p>
+            </div>
+
+            <form id="registrationForm" action="index8.html" method="POST">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="firstName">Izina ribanza</label>
+                        <input type="text" id="firstName" placeholder="Andika izina ryawe" required minlength="2">
+                        <div class="error-message" id="firstNameError">Andika izina ry’inyuguti 2 cyangwa irenga.</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="lastName">Izina rikurikira</label>
+                        <input type="text" id="lastName" placeholder="Andika izina rikurikira" required minlength="2">
+                        <div class="error-message" id="lastNameError">Andika izina rikurikira ry’inyuguti 2 cyangwa irenga.</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Imeyili</label>
+                    <input type="email" id="email" placeholder="Andika imeyili yawe" required>
+                    <div class="error-message" id="emailError">Imeyili ntabwo ari yo.</div>
+                    <div class="success-message" id="emailSuccess">Imeyili niyo.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Telephone</label>
+                    <input type="tel" id="phone" placeholder="Andika numero yawe" required pattern="[0-9]{10}">
+                    <div class="error-message" id="phoneError">Nimero ntabwo ari yo (igomba kuba imibare 10).</div>
+                    <div class="success-message" id="phoneSuccess">Nimero yawe niyo.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">Ijambobanga</label>
+                    <input type="password" id="password" placeholder="Andika ijambobanga" required minlength="6">
+                    <span class="password-toggle" id="passwordToggle"><i class="fas fa-eye"></i></span>
+                    <div class="error-message" id="passwordError">Ijambobanga rigomba kuba inyuguti 6 cyangwa irenga.</div>
+                    <div class="success-message" id="passwordSuccess">Ijambobanga ni ryo.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">Emeza ijambobanga</label>
+                    <input type="password" id="confirmPassword" placeholder="Andika nanone ijambobanga" required minlength="6">
+                    <span class="password-toggle" id="confirmPasswordToggle"><i class="fas fa-eye"></i></span>
+                    <div class="error-message" id="confirmPasswordError">Ijambobanga ntirihura.</div>
+                    <div class="success-message" id="confirmPasswordSuccess">Ijambobanga rirahuye.</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="location">Aho Uherereye (GPS)</label>
+                    <input type="text" id="location" placeholder="Cyangwa shyiramo Google Maps link hano..." required>
+                    <button type="button" id="getLocationBtn" class="button1" style="margin-top:10px;">Fata aho uherereye (GPS)</button>
+                    <div class="error-message" id="locationError">Ntibyashobotse gufata aho uherereye.</div>
+                    <div class="success-message" id="locationSuccess">Aho uherereye byabonetse neza!</div>
+                </div>
+
+                <div class="form-group">
+                    <label for="payment-method" class="block text-sm font-weight-bold mb-2">Hitamo Uburyo bwo Kwishyura: <span style="color: var(--primary);">*</span></label>
+                    
+                    <select id="payment-method" name="paymentMethod" required>
+                        <option value="" disabled selected>--- Hitamo ---</option>
+                        <option value="MTN Mobile Money">MTN Mobile Money</option>
+                        <option value="Airtel Money">Airtel Money</option>
+                    </select>
+                </div>
+                
+                <div id="payment-details" style="display: none;" class="payment-info-box">
+                    <h3 class="font-weight-bold" style="font-size: 1.25rem; margin-bottom: 10px; color: var(--primary);">Amakuru yo Kwishyura</h3>
+                    <div id="payment-content">
+                        </div>
+                    <p class="mt-3 text-sm" style="color: var(--error); font-weight: 600; margin-top: 15px;">
+                        NB: Igicuruzwa kikugeraho nyuma yokwakira amafaranga.
+                    </p>
+                </div>
+
+                <div class="form-footer">
+                    <button type="submit" class="button2">OHEREZA</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3>FOOD DELIVERY</h3>
+                <p>Tumiza ibiryo byiza kandi byihuse!</p>
+                <div class="social-icons" style="margin-top: 20px;">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+            </div>
+        <p style="text-align:center; color:var(--gray); margin-top:30px; padding-top: 10px; border-top: 1px solid rgba(255, 255, 255, 0.1);">© 2025 FOOD DELIVERY. Developed by Group 1.</p>
+    </footer>
+
+<script>
+    const form = document.getElementById('registrationForm');
+    const firstNameInput = document.getElementById('firstName');
+    const lastNameInput = document.getElementById('lastName');
+    const emailInput = document.getElementById('email');
+    const phoneInput = document.getElementById('phone');
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirmPassword');
+    const locationInput = document.getElementById('location');
+    const getLocationBtn = document.getElementById('getLocationBtn');
+    const paymentMethodSelect = document.getElementById('payment-method');
+    const paymentDetailsDiv = document.getElementById('payment-details');
+    const paymentContentDiv = document.getElementById('payment-content');
+
+    // Error and Success Message Elements
+    const firstNameError = document.getElementById('firstNameError');
+    const lastNameError = document.getElementById('lastNameError');
+    const emailError = document.getElementById('emailError');
+    const phoneError = document.getElementById('phoneError');
+    const passwordError = document.getElementById('passwordError');
+    const confirmPasswordError = document.getElementById('confirmPasswordError');
+    const locationError = document.getElementById('locationError');
+
+    const emailSuccess = document.getElementById('emailSuccess');
+    const phoneSuccess = document.getElementById('phoneSuccess');
+    const passwordSuccess = document.getElementById('passwordSuccess');
+    const confirmPasswordSuccess = document.getElementById('confirmPasswordSuccess');
+    const locationSuccess = document.getElementById('locationSuccess');
+
+    // Utility function to set error/success state
+    function setValidationState(element, errorMsgElement, successMsgElement, isValid, message = '') {
+        const formGroup = element.parentElement;
+        errorMsgElement.style.display = 'none';
+        if (successMsgElement) successMsgElement.style.display = 'none';
+
+        if (isValid) {
+            formGroup.classList.remove('error');
+            formGroup.classList.add('success');
+            if (successMsgElement) successMsgElement.style.display = 'block';
+        } else {
+            formGroup.classList.remove('success');
+            formGroup.classList.add('error');
+            errorMsgElement.textContent = message || errorMsgElement.textContent;
+            errorMsgElement.style.display = 'block';
+        }
+        
+        // Remove success class on error to ensure correct border color
+        if (!isValid) formGroup.classList.remove('success');
+    }
+
+    // --- Validation Functions ---
+
+    function validateName(input, errorElement, successElement, minLength, defaultMessage) {
+        const valid = input.value.trim().length >= minLength;
+        setValidationState(input, errorElement, successElement, valid, defaultMessage);
+        return valid;
+    }
+
+    function validateFirstName() {
+        return validateName(firstNameInput, firstNameError, null, 2, "Andika izina ry’inyuguti 2 cyangwa irenga.");
+    }
+    
+    function validateLastName() {
+        return validateName(lastNameInput, lastNameError, null, 2, "Andika izina rikurikira ry’inyuguti 2 cyangwa irenga.");
+    }
+    
+    function validateEmail() {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const valid = emailRegex.test(emailInput.value.trim());
+        setValidationState(emailInput, emailError, emailSuccess, valid, "Imeyili ntabwo ari yo.");
+        return valid;
+    }
+    
+    function validatePhone() {
+        // Simple 10-digit number validation for Rwandan format (e.g., 078xxxxxxx or 073xxxxxxx)
+        const phoneRegex = /^(07[8|9|3|2])\d{7}$/;
+        const valid = phoneRegex.test(phoneInput.value.trim());
+        setValidationState(phoneInput, phoneError, phoneSuccess, valid, "Nimero ntabwo ari yo (igomba kuba imibare 10, itangira na 07...).");
+        return valid;
+    }
+
+    function validatePassword() {
+        const valid = passwordInput.value.trim().length >= 6;
+        setValidationState(passwordInput, passwordError, passwordSuccess, valid, "Ijambobanga rigomba kuba inyuguti 6 cyangwa irenga.");
+        return valid;
+    }
+
+    function validateConfirmPassword() {
+        const passwordsMatch = passwordInput.value === confirmPasswordInput.value;
+        const baseValid = validatePassword();
+        const valid = passwordsMatch && baseValid;
+        
+        if (!passwordsMatch) {
+            setValidationState(confirmPasswordInput, confirmPasswordError, confirmPasswordSuccess, false, "Ijambobanga ntirihura.");
+        } else {
+             setValidationState(confirmPasswordInput, confirmPasswordError, confirmPasswordSuccess, baseValid, "Ijambobanga rigomba kuba inyuguti 6 cyangwa irenga.");
+        }
+        return valid;
+    }
+    
+    // --- Event Listeners for Live Validation ---
+    firstNameInput.addEventListener('input', validateFirstName);
+    lastNameInput.addEventListener('input', validateLastName);
+    emailInput.addEventListener('input', validateEmail);
+    phoneInput.addEventListener('input', validatePhone);
+    passwordInput.addEventListener('input', validatePassword);
+    confirmPasswordInput.addEventListener('input', validateConfirmPassword);
+    passwordInput.addEventListener('input', () => {
+        if (confirmPasswordInput.value.length > 0) {
+            validateConfirmPassword(); // Re-validate confirm password if password changes
+        }
+    });
+
+    // --- Main Form Submission Validation ---
+    form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const isFirstNameValid = validateFirstName();
+        const isLastNameValid = validateLastName();
+        const isEmailValid = validateEmail();
+        const isPhoneValid = validatePhone();
+        const isPasswordValid = validatePassword();
+        const isConfirmPasswordValid = validateConfirmPassword();
+        
+        // Note: Location is optional unless the button is clicked, but the input is 'required' in HTML.
+        // We will skip complex location validation for now, relying on HTML's 'required'.
+
+        if (isFirstNameValid && isLastNameValid && isEmailValid && isPhoneValid && isPasswordValid && isConfirmPasswordValid) {
+            // If all validations pass, you can proceed with form submission (e.g., AJAX or navigate to success page)
+            // Since action="tha.html" is set, the form will submit and navigate there.
+            form.submit();
+        } else {
+            alert("Hari amakosa yuzuye mu ifomu. Nyamuneka yasukure.");
+        }
+    });
+
+    // --- Password Toggle Feature ---
+    document.getElementById('passwordToggle').addEventListener('click', function() {
+        const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordInput.setAttribute('type', type);
+        this.querySelector('i').classList.toggle('fa-eye');
+        this.querySelector('i').classList.toggle('fa-eye-slash');
+    });
+    
+    document.getElementById('confirmPasswordToggle').addEventListener('click', function() {
+        const type = confirmPasswordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+        confirmPasswordInput.setAttribute('type', type);
+        this.querySelector('i').classList.toggle('fa-eye');
+        this.querySelector('i').classList.toggle('fa-eye-slash');
+    });
+
+
+    // --- GPS Feature ---
+    getLocationBtn.addEventListener('click', function() {
+        if (navigator.geolocation) {
+            locationInput.value = "";
+            setValidationState(locationInput, locationError, locationSuccess, false, locationError.textContent); // Clear previous state
+            getLocationBtn.textContent = "Irimo gufata aho uherereye...";
+            getLocationBtn.disabled = true;
+            
+            navigator.geolocation.getCurrentPosition(
+                function(position) {
+                    const lat = position.coords.latitude;
+                    const lon = position.coords.longitude;
+                    // Corrected Google Maps link format
+                    const link = `https://maps.google.com/?q=${lat},${lon}`;
+                    locationInput.value = link;
+                    setValidationState(locationInput, locationError, locationSuccess, true);
+                    getLocationBtn.textContent = "Fata aho uherereye (GPS)";
+                    getLocationBtn.disabled = false;
+                },
+                function(error) {
+                    let errorMessage = "Ntibyashobotse gufata aho uherereye.";
+                    if (error.code === error.PERMISSION_DENIED) {
+                        errorMessage = "Wanze ko twakoresha GPS. Nyamuneka ongera ugerageze cyangwa wandike aherereye.";
+                    }
+                    locationInput.value = "";
+                    setValidationState(locationInput, locationError, locationSuccess, false, errorMessage);
+                    getLocationBtn.textContent = "Fata aho uherereye (GPS)";
+                    getLocationBtn.disabled = false;
+                }
+            );
+        } else {
+            alert("Iyi browser ntishyigikira GPS.");
+            setValidationState(locationInput, locationError, locationSuccess, false, "Iyi browser ntishyigikira GPS.");
+        }
+    });
+
+    // --- Payment Details Display Logic ---
+    paymentMethodSelect.addEventListener('change', function() {
+        const method = this.value;
+        let content = '';
+
+        const transactionInput = `
+            <div class="form-group mt-4">
+                <label for="transaction-id" class="block" style="font-size: 0.85rem; font-weight: bold; color: var(--light);">
+                    Transaction ID (Ubutumwa bwa SMS) <span style="color: var(--primary);">*</span>
+                </label>
+                <input type="text" id="transaction-id" name="transactionId" required 
+                       placeholder="Urugero: QY98P940E cyangwa Code Yemeza">
+            </div>
+        `;
+        
+        if (method === 'MTN Mobile Money') {
+            content = `
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <img src="MTN.png" alt="MTN Logo" class="logo-small"/> 
+                    <p style="font-size: 1.1rem; font-weight: bold; color: var(--primary);">MTN Mobile Money</p>
+                </div>
+                <p style="font-size: 0.9rem; color: var(--gray);">Numero yo Kwishyura: <strong>+250 794 276 148</strong></p>
+                <p style="font-size: 0.9rem; color: var(--gray);">Izina ry'Umukoresha: <strong>FOOD DELIVERY SERVICES LTD</strong></p>
+                <p style="margin-top: 10px; font-size: 0.85rem; font-weight: 600; color: var(--gray);">
+                    Uburyo bwo kwishyura: Kanda <strong>*182*1*1*0794276148#</strong> (Kwishyura Merchant ID)
+                </p>
+                ${transactionInput} 
+            `;
+            paymentDetailsDiv.style.display = 'block';
+        } else if (method === 'Airtel Money') {
+            content = `
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                    <img src="AIRTEL.Png" alt="Airtel Logo" class="logo-small"/> 
+                    <p style="font-size: 1.1rem; font-weight: bold; color: var(--primary);">Airtel Money</p>
+                </div>
+                <p style="font-size: 0.9rem; color: var(--gray);">Numero yo Kwishyura: <strong>+250 736 223 171</strong></p>
+                <p style="font-size: 0.9rem; color: var(--gray);">Izina ry'Umukoresha: <strong>FOOD DELIVERY SERVICES LTD</strong></p>
+                <p style="margin-top: 10px; font-size: 0.85rem; font-weight: 600; color: var(--gray);">
+                    Uburyo bwo kwishyura: Kanda <strong>*182*1*1*0736223171#</strong> (Kwishyura Merchant ID)
+                </p>
+                ${transactionInput} 
+            `;
+            paymentDetailsDiv.style.display = 'block';
+        } else {
+            paymentDetailsDiv.style.display = 'none';
+        }
+
+        paymentContentDiv.innerHTML = content;
+    });
+
+</script>
+</body>
+</html>

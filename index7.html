@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FOOD-DELIVERY</title>
+    <link rel="icon" href="logo.png" type="image/x-icon">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary: rgb(168, 36, 36); /* ibara rifata uruhare runini */
+            --secondary: rgb(110, 45, 45); /* ibara riza nyuma yo gukoza poenter kuibuto*/
+            --dark: #141414;
+            --light: #fdfffe;
+            --gray: #84838f;
+            --light-dark: #2c2c2c;
+            --white: white;
+            --black: #000;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: var(--dark);
+            color: var(--white);
+            min-height: 100vh;
+        }
+        
+        /* Header */
+        header {
+            background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 100%);
+            padding: 20px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 150; /* Above the sidebar */
+            transition: background 0.3s;
+        }
+        
+        header.scrolled {
+            background: var(--dark);
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo h1 {
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        
+        .logo h1 p {
+            display: inline;
+        }
+        
+        /* Navigation Links (Hidden in Header, now in Sidebar) */
+        nav {
+            display: none; /* Hide desktop nav structure */
+        }
+        
+        .auth-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 4px;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: rgb(231, 238, 232);
+        }
+        
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--gray);
+            color: var(--white);
+        }
+        
+        .btn:hover {
+            opacity: 0.9;
+        }
+       
+        /* --- SIDEBAR MENU CSS --- */
+        .menu-toggle {
+            cursor: pointer;
+            flex-direction: column;
+            justify-content: space-around;
+            width: 30px;
+            height: 30px;
+            z-index: 151; /* Above all */
+            display: flex; /* Always visible for menu access */
+        }
+        
+        .bar {
+            width: 100%;
+            height: 3px;
+            background-color: var(--white);
+            transition: all 0.3s linear;
+            border-radius: 5px;
+        }
+        
+        /* Toggle 'X' effect for the button when sidebar is open */
+        .menu-toggle.open .bar:nth-child(2) {
+            opacity: 0;
+        }
+        
+        .menu-toggle.open .bar:nth-child(1) {
+            transform: rotate(45deg) translate(5px, 8px);
+        }
+        
+        .menu-toggle.open .bar:nth-child(3) {
+            transform: rotate(-45deg) translate(5px, -8px);
+        }
+
+        .sidebar {
+            height: 100%;
+            width: 0; /* Default closed state */
+            position: fixed;
+            z-index: 101;
+            top: 0;
+            right: 0;
+            background-color: var(--light-dark); 
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 80px; /* Space for the fixed header */
+            box-shadow: -5px 0 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .sidebar.open {
+            width: 250px; /* Open width */
+        }
+
+        .sidebar-nav ul {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .sidebar-nav ul li a {
+            padding: 15px 25px;
+            text-decoration: none;
+            font-size: 18px;
+            color: var(--white);
+            display: block;
+            transition: 0.3s;
+        }
+
+        .sidebar-nav ul li a:hover {
+            background-color: var(--primary);
+            color: var(--light);
+        }
+        
+        /* Hero Section */
+        .hero {
+            height: 80vh;
+            background-size: cover;
+            background-position: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 0 20px;
+        }
+        .video-bg1{
+            position: absolute;
+            right: 0;
+            bottom: 0;
+            z-index: -1;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .hero-content {
+            max-width: 800px;
+            color: var(--light);
+        }
+        
+        .hero h2 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            line-height: 1.2;
+        }
+        
+        .hero p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        /* Food Categories - Slider Enhancement (Kept for completeness) */
+        .categories {
+            padding: 60px 5%;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--primary);
+            display: inline-block;
+        }
+
+        .slider-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .category-slider {
+            display: flex;
+            overflow-x: auto; 
+            scroll-snap-type: x mandatory; 
+            gap: 20px;
+            padding: 20px 0;
+            scroll-behavior: smooth;
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        .category-slider::-webkit-scrollbar {
+            display: none;
+        }
+
+        .slider-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(0, 0, 0, 0.7);
+            color: var(--white);
+            border: none;
+            padding: 15px 10px;
+            cursor: pointer;
+            z-index: 50;
+            font-size: 1.5rem;
+            border-radius: 4px;
+            transition: background 0.3s;
+            display: none; 
+        }
+
+        .slider-button:hover {
+            background: var(--primary);
+        }
+
+        .prev-btn {
+            left: 0;
+        }
+
+        .next-btn {
+            right: 0;
+        }
+
+        .category-card {
+            min-width: 280px; 
+            background: var(--light-dark);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+            cursor: pointer;
+            scroll-snap-align: start;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        
+        .category-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .category-img {
+            height: 150px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .category-content {
+            padding: 15px;
+        }
+        
+        .category-content h3 {
+            margin-bottom: 10px;
+            font-size: 1.2rem;
+            color: var(--primary);
+        }
+        
+        /* Food Items (Grid styles kept) */
+        .food-items {
+            padding: 40px 5%;
+        }
+        
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        
+        .food-card {
+            background: var(--light-dark);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: transform 0.3s;
+        }
+        
+        .food-card:hover {
+            transform: translateY(-10px);
+        }
+        
+        .food-img {
+            height: 200px;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+        
+        .food-content {
+            padding: 20px;
+        }
+        
+        .food-content button {
+            width: 100%;
+            padding: 12px;
+            background: var(--primary);
+            color: rgb(234, 234, 240);
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background 0.3s;
+            margin-bottom: 5px; 
+        }
+        
+        .food-content button:hover {
+            background: var(--secondary);
+        }
+        
+        /* Auth Modal (styles kept) */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal.open {
+            display: flex;
+        }
+
+        .modal-content {
+            background: var(--white);
+            color: var(--black); 
+            width: 100%;
+            max-width: 450px;
+            border-radius: 8px;
+            padding: 30px;
+            position: relative;
+        }
+        /* ... (Rest of Modal CSS kept) ... */
+        
+        /* Footer (styles kept) */
+        footer {
+            background: var(--light-dark);
+            padding: 40px 5%;
+            margin-top: 60px;
+        }
+         .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .footer-column h3 {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+            color: var(--primary);
+            display: flex;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 10px;
+        }
+
+        .footer-column a {
+            color: var(--gray);
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column a:hover {
+            color: var(--light);
+        }
+
+        .social-icons {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        /* ... (Rest of Footer CSS kept) ... */
+        
+        /* Responsive */
+        @media (min-width: 1024px) {
+            /* Show slider buttons on larger screens */
+            .slider-button {
+                display: block;
+            }
+        }
+
+        @media (max-width: 768px) {
+            /* Hide slider buttons on mobile */
+            .slider-button {
+                display: none;
+            }
+
+            .hero h2 {
+                font-size: 2.5rem;
+            }
+            
+            .hero p {
+                font-size: 1.2rem;
+            }
+            
+            .food-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="mySidebar" class="sidebar">
+        <div class="sidebar-nav">
+            <ul>
+                <li><a href="index0.html">DEVELOPERS</a></li>
+                <li><a href="index13.html">ABOUT US</a></li>
+                <li><a href="index10.html">CALCULATOR</a></li>
+                <li><a href="index11.html">HELP</a></li>
+                <li><a href="index12.html">ACCOUNT</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <header>
+        <div class="logo">         
+            <h1><p style="color: rgb(168, 36, 36);">FOOD</p><p style="color: rgb(255, 255, 255);">DELIVERY</p></h1>
+        </div>
+        
+        <div class="menu-toggle" id="menuToggle">
+            <div class="bar"></div>
+            <div class="bar"></div>
+            <div class="bar"></div>
+        </div>
+    </header>
+   
+    <section class="hero">
+         <video  autoplay loop muted plays-inline class="video-bg1">
+            <source src="video2.mp4" type="video/mp4">
+         </video>
+        <div class="hero-content">
+        <p><h2>BEST FOOD</h2></p>
+            <p>TUMIZA IBIRYO WIFUNZ KUGICIRO GITOYA BIKUJYEREHO BYIHUSE</p>
+            <a href="index14.html"><button class="btn btn-primary">MY AI</button></a>
+        </div>
+    </section>
+
+    <section class="categories">
+        <h2 class="section-title">AMOKO Y'IBIRYO</h2>
+        
+        <div class="slider-container">
+            <button class="slider-button prev-btn" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+
+            <div class="category-slider" id="categorySlider">
+                <div class="category-card">
+                    <div class="category-img" style="background-image: url('1.jpg');"></div>
+                    <div class="category-content">
+                        <h3>Bulgur with Tomatoes</h3>
+                        <p>Every region in the south-east has its own favourite method of preparation</p>
+                    </div>
+                </div>
+                <div class="category-card">
+                  <div class="category-img" style="background-image: url('2.jpg');"></div>
+                    <div class="category-content">
+                        <h3>Bulgur Bake</h3>
+                        <p>A few weeks after making the above dish, I was looking to my fridge and cupboard for the ingredients to create a dinner</p>
+                    </div>
+                </div>
+                <div class="category-card">
+                   <div class="category-img" style="background-image: url('3.jpg');"></div>
+                    <div class="category-content">
+                        <h3>Bulgur Mujadara</h3>
+                        <p>Bulgur Mujadara is a nutritious, delicious, and inexpensive dinner meal, that you’ve got to try!</p>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="category-img" style="background-image: url('4.jpg');"></div>
+                    <div class="category-content">
+                        <h3>Vegan Chickpea Burgers</h3>
+                        <p>These vegan chickpea burgers (Nistisima Mpiftekia Revithion), are packed with spices and herbs, very healthy and seriously satisfying</p>
+                    </div>
+                </div>
+                <div class="category-card">
+                   <div class="category-img" style="background-image: url('5.jpg');"></div>
+                    <div class="category-content">
+                        <h3>Mujadara</h3>
+                        <p>A simple classic that’s packed with delicious flavor!</p>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="category-img" style="background-image: url('1.jpg');"></div>
+                    <div class="category-content">
+                        <h3>Extra Category 1</h3>
+                        <p>More food options to explore!</p>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <div class="category-img" style="background-image: url('2.jpg');"></div>
+                    <div class="category-content">
+                        <h3>Extra Category 2</h3>
+                        <p>Delicious new recipes!</p>
+                    </div>
+                </div>
+            </div>
+
+            <button class="slider-button next-btn" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+        </div>
+    </section>
+    
+    <section class="food-items">
+        <h2 class="section-title">RAISE</h2>
+        <div class="food-grid">
+            <div class="food-card">
+              <div class="food-img" style="background-image: url('rice 1.jpg')">                   
+                </div>
+                <div class="food-content">
+                    <h3>BRIAN</h3>
+                    <P>3500Frw</P>
+                   <a href="index1.html"><button>TUMIZA NONAHA</button></a>
+                  <a href="index3.html"><button>INFO</button></a>
+                </div>
+            </div>
+            <div class="food-card">
+               <div class="food-img" style="background-image: url('rice2.jpg');">                  
+                </div>
+                <div class="food-content">
+                  <h3>BEEF PILAU</h3>
+                  <P>4800Frw</P>                    
+                  <a href="index1.html"><button>TUMIZA NONAHA</button></a>
+                  <a href="index3.html"> <button>INFO</button></a>
+                </div>
+            </div>
+            <div class="food-card">
+               <div class="food-img" style="background-image: url('rice3.jpg');">                 
+                </div>
+                <div class="food-content">
+                   <h3>LAMB PILAU</h3>
+                   <p>3000Frw</p> 
+                    <a href="index1.html"><button>TUMIZA NONAHA</button></a>
+                  <a href="index3.html"> <button>INFO</button></a>
+                </div>
+            </div>
+            <div class="food-card">
+               <div class="food-img" style="background-image: url('rice4.jpg');">
+                </div>
+                <div class="food-content">
+                  <h3>PILAU MASALA</h3>
+                  <p>4000Frw</p>                   
+                    <a href="index1.html"><button>TUMIZA NONAHA</button></a>
+                  <a href="index3.html"> <button>INFO</button></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="food-items">
+        <h2 class="section-title">burgers</h2>
+        <div class="food-grid">
+            <div class="food-card">
+                <div class="food-img" style="background-image: url('images (1).jpg');">                    
+                </div>
+                <div class="food-content">
+                    <h3>THE HARBORD ROOM</h3>
+                    <p>1500Frw</p>
+                    <a href="index1.html"><button>TUMIZA NONAHA</button></a>
+                  <a href="index5.html"> <button>INFO</button></a>
+                </div>
+            </div>
+            <div class="food-card">
+                <div class="food-img" style="background-image: url('images (2).jpg');">                    
+                </div>
+                <div class="food-content">
+                    <h3>MARBEN</h3>
+                    <p>10000Frw</p>
+                    <a href="index1.html"><button>TUMIZA NONAHA</button></a>
+                   <a href="index5.html"> <button>INFO</button></a>
+                </div>
+            </div>
+            <div class="food-card">
+                <div class="food-img" style="background-image: url('images (3).jpg');">                    
+                </div>
+                <div class="food-content">
+                    <h3>BYMARK</h3>
+                    <p>5000Frw</p>
+                    <a href="index1.html"><button>TUMIZA NONAHA</button></a>
+                   <a href="index5.html"><button>INFO</button></a>
+                </div>
+            </div>
+            <div class="food-card">
+                <div class="food-img" style="background-image: url('images (4).jpg');">
+                </div>
+                <div class="food-content">
+                    <h3>NOTABENE</h3>
+                    <p>3000Frw</p>
+                    <a href="index1.html"><button>TUMIZA NONAHA</button></a>
+                   <a href="index5.html"><button>INFO</button></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="food-items">
+        <h2 class="section-title">CHICKEN</h2>
+        <div class="food-grid">
+            <div class="food-card">
+                <div class="food-img" style="background-image: url('KOKO1.jpg');">                    
+                </div>
+                <div class="food-content">
+                    <h3>CHICKEN LEG</h3>
+                    <p>4500Frw</p>
+                    <a href="index1.html"><button>TUMIZA NONAHA</button></a>
+                   <a href="index4.html"><button>INFO</button></a>
+                </div>
+            </div>
+            <div class="food-card">
+                <div class="food-img" style="background-image: url('KOKO2.jpg');">                    
+                </div>
+                <div class="food-content">
+                    <h3>WHOLE CHICKEN</h3>
+                    <p>15000Frw</p>
+                    <a href="index1.html"><button>TUMIZA NONAHA</button></a>
+                   <a href="index4.html"><button>INFO</button></a>
+                </div>
+            </div>
+            <div class="food-card">
+                <div class="food-img" style="background-image: url('KOKO3.jpg');">                    
+                </div>
+                <div class="food-content">
+                    <h3>CHICKEN MAC</h3>
+                    <p>5000Frw</p>
+                    <a href="index1.html"><button>TUMIZA NONAHA</button></a>
+                  <a href="index4.html"> <button>INFO</button></a>
+                </div>
+            </div>
+            <div class="food-card">
+                <div class="food-img" style="background-image: url('KOKO4.jpg');">
+                </div>
+                <div class="food-content">
+                    <h3>CHICKEN WINGS</h3>
+                    <p>7900Frw</p>
+                    <a href="index1.html"><button>TUMIZA NONAHA</button></a>
+                  <a href="index4.html"> <button>INFO</button></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="food-items">
+        <h2 class="section-title">CHIPS</h2>
+        <div class="food-grid">
+            <div class="food-card">
+                <div class="food-img" style="background-image: url('F1.jpg');">                    
+                </div>
+                <div class="food-content">
+                    <h3>POTATO CHIPS</h3>
+                    <p>3000Frw</p>
+                    <a href="index1.html"><button>TUMIZA NONAHA</button></a>
+                  <a href="index2.html"><button>INFO</button></a>
+                </div>
+            </div>
+            <div class="food-card">
+                <div class="food-img" style="background-image: url('F2.jpg');">                    
+                </div>
+                <div class="food-content">
+                    <h3>CHIPS PAPER</h3>
+                    <p>7000Frw</p>
+                    <a href="index1.html"><button>TUMIZA NONAHA</button></a>
+                   <a href="index2.html"><button>INFO</button></a>
+                </div>
+            </div>
+            <div class="food-card">
+                <div class="food-img" style="background-image: url('F3.jpg');">                    
+                </div>
+                <div class="food-content">
+                    <h3>STEAK FRIES</h3>
+                    <p>3500Frw</p>
+                    <a href="index1.html"><button>TUMIZA NONAHA</button></a>
+                   <a href="index2.html"><button>INFO</button></a>
+                </div>
+            </div>
+            <div class="food-card">
+                <div class="food-img" style="background-image: url('F46.jpg');">
+                </div>
+                <div class="food-content">
+                    <h3>OLD BAY CHIPS</h3>
+                    <p>5000Frw</p>
+                    <a href="index1.html"><button>TUMIZA NONAHA</button></a>
+                   <a href="index2.html"><button>INFO</button></a>
+                </div>
+            </div>
+        </div>
+    </section>
+<section class="food-items">
+        <h2 class="section-title">coffee</h2>
+        <div class="food-grid">
+            <div class="food-card">
+                <div class="food-img" style="background-image: url('coffe1.jpeg');">                    
+                </div>
+                <div class="food-content">
+                    <h3>espresso</h3>
+                    <p>3000Frw</p>
+                    <a href="index1.html"><button>TUMIZA NONAHA</button></a>
+                  <a href="index6.html"><button>INFO</button></a>
+                </div>
+            </div>
+            <div class="food-card">
+                <div class="food-img" style="background-image: url('coffe2.jpeg');">                    
+                </div>
+                <div class="food-content">
+                    <h3>AMERICANO</h3>
+                    <p>7000Frw</p>
+                    <a href="index1.html"><button>TUMIZA NONAHA</button></a>
+                   <a href="index6.html"><button>INFO</button></a>
+                </div>
+            </div>
+            <div class="food-card">
+                <div class="food-img" style="background-image: url('coffe3.jpeg');">                    
+                </div>
+                <div class="food-content">
+                    <h3>Arabica</h3>
+                    <p>3500Frw</p>
+                    <a href="index1.html"><button>TUMIZA NONAHA</button></a>
+                   <a href="index6.html"><button>INFO</button></a>
+                </div>
+            </div>
+            <div class="food-card">
+                <div class="food-img" style="background-image: url('coffe4.jpeg');">
+                </div>
+                <div class="food-content">
+                    <h3>ECELAS</h3>
+                    <p>5000Frw</p>
+                    <a href="index1.html"><button>TUMIZA NONAHA</button></a>
+                   <a href="index6.html"><button>INFO</button></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="modal" id="authModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span> 
+            <div class="modal-tabs">
+                <div class="modal-tab active" data-tab="login" onclick="switchTab('login')">Injira</div>
+                <div class="modal-tab" data-tab="register" onclick="switchTab('register')">Iyandikishe</div>
+            </div>
+            
+            <form class="modal-form active" id="loginForm">
+                <div class="form-group">
+                    <label for="loginEmail">Imeyili</label>
+                    <input type="email" id="loginEmail" required placeholder="Andika imeyili yawe">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Ijambobanga</label>
+                    <input type="password" id="loginPassword" required placeholder="Andika ijambobanga ryawe">
+                </div>
+                <button type="submit">Injira</button>
+            </form>
+            
+            <form class="modal-form" id="registerForm">
+                <div class="form-group">
+                    <label for="registerName">Amazina</label>
+                    <input type="text" id="registerName" required placeholder="Andika amazina yawe yose">
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Imeyili</label>
+                    <input type="email" id="registerEmail" required placeholder="Andika imeyili yawe">
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Ijambobanga</label>
+                    <input type="password" id="registerPassword" required placeholder="Shyiramo ijambobanga">
+                </div>
+                <div class="form-group">
+                    <label for="registerPhone">Telephone</label>
+                    <input type="tel" id="registerPhone" required placeholder="Andika nimero yawe ya telephone">
+                </div>
+                <button type="submit">Iyandikishe</button>
+            </form>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-column">
+                <h3><span style="color: rgb(141, 38, 38);">FOOD</span><span style="color: white;">DELIVERY</span></h3>
+                <p>TUMIZA IBIRYO BYIZA KANDI BYIHUSE.</p>
+                 <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>AMOKO</h3>
+                <ul>
+                    <li><a href="#">Raice</a></li>
+                    <li><a href="#">Ama-Burger</a></li>
+                    <li><a href="#">Inkoko</a></li>
+                    <li><a href="#">Ifiriti</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Twandikire</h3>
+                <ul>
+                    <li><i class="fas fa-map-marker-alt"></i> Kigali, Rwanda</li>
+                    <li><i class="fas fa-phone"></i> +250 794213145</li>
+                    <li><i class="fas fa-envelope"></i> FOOD-DELIVERY@gmail.com</li>
+                </ul>
+            </div>
+        </div>
+        <div class="copyright">
+            &copy; 2025 FOOD-DELIVERY. Developed by Group 1.
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuToggle = document.getElementById('menuToggle');
+            const sidebar = document.getElementById('mySidebar');
+            const header = document.querySelector('header');
+            const authModal = document.getElementById('authModal');
+            const modalTabs = document.querySelectorAll('.modal-tab');
+            const modalForms = document.querySelectorAll('.modal-form');
+
+            // --- 1. Sidebar Toggle ---
+            function toggleSidebar() {
+                if (sidebar.classList.contains('open')) {
+                    sidebar.classList.remove('open');
+                    menuToggle.classList.remove('open');
+                    sidebar.style.width = '0'; // Close
+                } else {
+                    sidebar.classList.add('open');
+                    menuToggle.classList.add('open');
+                    sidebar.style.width = '250px'; // Open
+                }
+            }
+            
+            menuToggle.addEventListener('click', toggleSidebar);
+
+            // Close sidebar when a link is clicked (optional)
+            document.querySelectorAll('.sidebar-nav a').forEach(link => {
+                link.addEventListener('click', toggleSidebar);
+            });
+            
+            // --- 2. Header Background on Scroll ---
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 50) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            });
+
+            // --- 3. Modal Functionality ---
+            window.openModal = function(tabName) {
+                authModal.classList.add('open');
+                switchTab(tabName);
+                if (sidebar.classList.contains('open')) { // Close sidebar if modal opens
+                    toggleSidebar();
+                }
+            }
+
+            window.closeModal = function() {
+                authModal.classList.remove('open');
+            }
+
+            window.switchTab = function(tabName) {
+                // Remove active class from all tabs and forms
+                modalTabs.forEach(tab => tab.classList.remove('active'));
+                modalForms.forEach(form => form.classList.remove('active'));
+
+                // Add active class to the selected tab and form
+                document.querySelector(`.modal-tab[data-tab="${tabName}"]`).classList.add('active');
+                document.getElementById(tabName + 'Form').classList.add('active');
+            }
+
+            // Close modal when clicking outside (on the overlay)
+            authModal.addEventListener('click', function(event) {
+                if (event.target === authModal) {
+                    closeModal();
+                }
+            });
+            
+            // Example form submission (prevents reload)
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Login form submitted (simulated)');
+                closeModal();
+            });
+
+            document.getElementById('registerForm').addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Register form submitted (simulated)');
+                closeModal();
+            });
+
+            // --- 4. Category Slider Navigation ---
+            const slider = document.getElementById('categorySlider');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            if (slider && prevBtn && nextBtn) {
+                const scrollAmount = 300; 
+
+                nextBtn.addEventListener('click', () => {
+                    slider.scrollBy({
+                        left: scrollAmount,
+                        behavior: 'smooth'
+                    });
+                });
+
+                prevBtn.addEventListener('click', () => {
+                    slider.scrollBy({
+                        left: -scrollAmount,
+                        behavior: 'smooth'
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>

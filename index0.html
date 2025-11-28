@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="logo.png" type="image/x-icon">
+    <title>Our Developer Team</title>
+    <style>
+        /* --- Basic Page Styles --- */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #521410; /* bg color */
+            color: #e2dddd;
+            margin: 0;
+            padding: 40px 20px;
+        }
+
+        /* --- Section Wrapper --- */
+        .team-section {
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .team-section h1 {
+            font-size: 2.5rem;
+            color: #e4e7eb; /* title ya developer */
+            margin-bottom: 10px;
+        }
+
+        .team-section > p {
+            font-size: 1.1rem;
+            color: #e7ebe7; /* <p> yo munsi ya developers */
+            margin-bottom: 50px;
+        }
+
+        /* --- Team Grid Container --- */
+        .team-container {
+            display: flex;
+            flex-wrap: wrap; /* Allows cards to stack on smaller screens */
+            justify-content: center;
+            gap: 30px; /* Space between cards */
+        }
+
+        /* --- Developer Card --- */
+        .dev-card {
+            background-color: #642525;
+            border-radius: 12px;
+            box-shadow: 0 6px 18px rgba(8, 8, 8, 0.582); /* shadow yo cards */
+            width: 300px;
+            padding: 30px;
+            box-sizing: border-box; /* Ensures padding doesn't affect width */
+            text-align: center;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .dev-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(100, 98, 98, 0.76); /* ibara ryo kuri shadow ya cards */
+        }
+
+        .dev-card img {
+            width: 140px;
+            height: 140px;
+            border-radius: 50%; /* Makes the image circular */
+            object-fit: cover; /* Prevents image from stretching */
+            border: 4px solid #e0e0e0; /* radius yokuri image */
+            margin-bottom: 20px;
+        }
+
+        .dev-card h3 {
+            font-size: 1.5rem;
+            color: #d1dae4; /* amazina yaba developers */
+            margin: 10px 0 5px 0;
+        }
+
+        .dev-card .role {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #000000; /* imirimo yaba developers  */
+            margin-bottom: 15px;
+        }
+
+        .dev-card p {
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #faf7f7; /* amakuru yaba developers  */
+        }
+
+
+        /* --- Responsive Design --- */
+        @media (max-width: 1024px) {
+            .dev-card {
+                /* Allows 2 cards per row on tablets */
+                width: calc(50% - 40px);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .dev-card {
+                /* Stacks cards vertically on mobile */
+                width: 90%;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="team-section">
+        <h1>Meet Our Developers</h1>
+        <p>The creative minds building the future of our web platform.</p>
+
+        <div class="team-container">
+
+            <div class="dev-card">
+                <img src="Dr.jpg" alt="Profile picture of Jane Doe">
+                <h3>Dr Seleman</h3>
+                <div class="role">Lead Full-Stack Developer</div>
+                <p>seleman is the architect of our system, with over 10 years of experience in building scalable and secure web applications from the ground up.</p>
+            </div>
+
+            <div class="dev-card">
+                <img src="empty.jpg" alt="Profile picture of Alex Smith">
+                <h3>MUGISHA</h3>
+                <div class="role">Senior Frontend Developer</div>
+                <p>mugisha brings our designs to life, specializing in React and modern CSS. They are passionate about creating intuitive and accessible user experiences.</p>
+            </div>
+
+            <div class="dev-card">
+                <img src="hope.jpg" alt="Profile picture of Maria Kim">
+                <h3>HOPE</h3>
+                <div class="role">Backend & Database Specialist</div>
+                <p>hope manages our APIs and databases, ensuring data integrity and optimizing for speed. She wrangles complex queries like no one else.</p>
+            </div>
+
+            <div class="dev-card">
+                <img src="denyse.jpg" alt="Profile picture of Raj Chen">
+                <h3>DENYSE</h3>
+                <div class="role">DevOps Engineer</div>
+                <p>denyse keeps our platform running smoothly. He automates our deployment pipelines and manages our cloud infrastructure, guaranteeing 99.9% uptime.</p>
+            </div>
+
+            <div class="dev-card">
+                <img src="nahyha.jpg" alt="Profile picture of Tom Lee">
+                <h3>NAHYAH</h3>
+                <div class="role">Junior Developer</div>
+                <p>nahyah is our team's rising star. He supports both frontend and backend tasks, bringing fresh ideas and a relentless passion for learning new technologies.</p>
+            </div>
+
+        </div>
+    </section>
+
+</body>
+</html>

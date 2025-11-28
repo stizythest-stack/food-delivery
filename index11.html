@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="rw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="logo.png" type="image/x-icon">
+    <title>FOOD DELIVERY - Help Center</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<style>
+    body {
+    font-family: 'Arial', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fff9f9; /* bg color */
+    color: #333; /* text color */
+}
+
+.header {
+    background-color: #961f1f; /* title ya page nibihakorerwa */
+    color: white;
+    padding: 50px 20px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.header h1 {
+    margin-bottom: 8px;
+    font-size: 2.5em;
+}
+
+
+.container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 0 20px;
+}
+
+h2 {
+    color: #772020; /* title iyobora kubibazo bikunzwe gutagwa */
+    border-bottom: 2px solid #e0e0e0; /* akarongo gaciye munsi ya title  */
+    padding-bottom: 10px;
+    margin-top: 30px;
+}
+
+/* --- Category Filter Styles --- */
+.category-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.category-button {
+    background-color: #aa1f1f; /* bg color  */
+    color: #fffefe; /* text color */
+    border: 1px solid #000000; /* border color */
+    padding: 8px 15px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.category-button:hover, .category-button.active {
+    background-color: #f8f8f8;
+    color: rgb(158, 52, 52);
+    transform: translateY(-2px);
+}
+
+/* --- Accordion/FAQ Styles --- */
+.faq-item {
+    margin-bottom: 12px;
+    border: 1px solid #c21717; /* bored yoguhitamo ibibazo */
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.753);
+    overflow: hidden; 
+}
+/* bg yahanditse ibibazo */
+.faq-question {
+    background-color: #f87474;
+    color: #333;
+    cursor: pointer;
+    padding: 18px 20px;
+    width: 100%;
+    border: none;
+    text-align: left;
+    outline: none;
+    font-size: 18px;
+    transition: background-color 0.3s;
+    font-weight: 600;
+}
+
+.faq-question:hover {
+    background-color: #f0f0f0;
+}
+
+.faq-answer {
+    padding: 0 20px;
+    background-color: #f9f9f9; /* bg yahanditse igisubizo */
+    max-height: 0; 
+    overflow: hidden;
+    transition: max-height 0.4s ease-in-out;
+}
+
+.faq-answer p {
+    padding-top: 5px;
+    padding-bottom: 20px;
+    line-height: 1.7;
+    color: #000000; /* text ya answer */
+}
+
+/* --- Contact Section Styles ya email na call phone  --- */
+.contact-section {
+    text-align: center;
+    padding: 40px;
+    margin-top: 40px;
+    background-color: #ffffff; /* bg yakutwandikira */
+    border: 1px solid #6d1e1e;
+    border-radius: 8px;
+}
+
+.contact-section h3 {
+    color: #281361; /* title yo kutwandikira */
+    margin-bottom: 15px;
+}
+
+.contact-button {
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+}
+/* amabuto ya kutwandikira */
+.contact-button.primary {
+    background-color: #882323;
+    color: white;
+}
+
+.contact-button.primary:hover {
+    background-color: #d8d8d8;
+    transform: translateY(-1px);
+    color: rgb(145, 44, 44);
+}
+
+.contact-button.secondary {
+    background-color: #f0f0f0;
+    color: #8b2121;
+    border: 1px solid #912525;
+}
+
+.contact-button.secondary:hover {
+    background-color: #b9b9b9;
+    transform: translateY(-1px);
+}
+
+/* --- Footer Styles --- */
+.footer {
+    text-align: center;
+    padding: 20px;
+    margin-top: 40px;
+    background-color: #8f2b2b;
+    color: #fffefe;
+    font-size: 14px;
+}
+
+.footer a {
+    color: #1471ce;
+    text-decoration: none;
+    margin: 0 5px;
+}
+
+.footer a:hover {
+    color: rgb(126, 123, 121);
+    text-decoration: underline;
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 600px) {
+    .header {
+        padding: 30px 10px;
+    }
+    .header h1 {
+        font-size: 2em;
+    }
+
+    .container {
+        padding: 0 10px;
+    }
+    .faq-question {
+        font-size: 16px; 
+    }
+    .contact-button {
+        display: block;
+        margin: 10px auto;
+        width: 80%;
+    }
+    .category-filter {
+        justify-content: center; /* Center buttons on mobile */
+    }
+}
+</style>
+<body>
+
+    <header class="header">
+        <h1>Ikigo cy'Ubufasha</h1>
+        <p>Turi hano kugira ngo tugufashe kumenya serivisi zacu.</p>
+    </header>
+
+
+    <main class="container">
+        <div id="categoryFilter" class="category-filter">
+            </div>
+
+        <h2>Ibibazo Bikunze Kwibazwa (FAQs)</h2>
+        
+        <div id="faqContainer">
+            </div>
+
+        <div class="contact-section">
+    <h3>Ntabwo wabonye igisubizo? 🙋</h3>
+    <p>Vugana n'itsinda ryacu rishinzwe abakiriya byihuse.</p>
+    <a href="mailto:kennyselleman@gmail.com" class="contact-button primary">Twandikire Email</a>
+    <a href="tel:+250794276148" class="contact-button secondary">Duhamagare</a>
+</div>
+
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 FOOD DELVERY. | <a href="https://www.vubavuba.rw/">Abo dukora kimwe</a> | <a href="index7.html">Garuka ku rubuga rwa mbere</a></p>
+    </footer>
+    
+    <script>
+        // 1. DATA: Gitabo cy'Amakuru y'Ibibazo n'Ibisubizo (FAQ Data Array)
+// Hano niho **UZONGERA** cyangwa **UHUBUZA** ibibazo n'ibisubizo.
+const faqData = [
+    {
+        category: "Konti", 
+        question: "Uburyo bwo kwinjira muri konti nshya?",
+        answer: "Kwinjira bisaba gukanda 'Kwinjira' hejuru ku ruhande rw'iburyo, ugashyiramo email/username n'ijambo ry'ibanga. Niba utarafungura konti, kanda 'Fungura Konti Nshya'."
+    },
+    {
+        category: "Kwishyura", 
+        question: "Nishura gute serivisi zanyu kandi ni ubuhe buryo mwemera?",
+        answer: "Twemera uburyo bwo kwishyura butandukanye nka MTN Mobile Money (Momo), ndetse na AIRTEL Money . Jya mu gice cyo 'Kwishyura' uhitemo ubwogukoresha."
+    },
+    {
+        category: "Konti", 
+        question: "Nshobora guhindura gute ijambo ry'ibanga (password)?",
+        answer: "Jya mu 'Igenzurwa rya Konti' (Account Settings), ukande 'Hagarika Password'. Tuzakohereza link kuri email yawe kugira ngo uhindure."
+    },
+    {
+        category: "Serivisi", 
+        question: "Ni izihe serivisi zikurikira mutanga?",
+        answer: "Dutanga serivisi eshatu z'ingenzi: Gutanga ubujyanama, Gutekera amakwe nibirori bitandukanye, no ku delivering ibiryo. Buri serivisi ifite igice cyayo cya ushobora kurebamo ibindi."
+    },
+    {
+        category: "Kwishyura", 
+        question: "Nshobora kubona invoice zanjye he?",
+        answer: "Invoice zose z'amafaranga wishyuye ziri mu gice cya 'Amateka y'Ibishyuwe' (Billing History) muri Konti yawe bwite."
+    }
+    // Ongeramo ibindi bibazo hano...
+];
+
+// 2. Kuzuza amakuru no Kugenzura Accordion
+document.addEventListener('DOMContentLoaded', function() {
+    const faqContainer = document.getElementById('faqContainer');
+    const categoryFilter = document.getElementById('categoryFilter');
+
+    // **Gukora Amakuru y'Ibibazo (Rendering FAQs)**
+    function renderFAQs(data) {
+        faqContainer.innerHTML = ''; // Subize content yose ku busa mbere yo kuzuza
+        data.forEach(item => {
+            const faqItem = document.createElement('div');
+            faqItem.className = 'faq-item';
+            faqItem.setAttribute('data-category', item.category); // Tugize data attribute ya Category
+            
+            faqItem.innerHTML = `
+                <button class="faq-question">
+                    ${item.question}
+                </button>
+                <div class="faq-answer">
+                    <p>${item.answer}</p>
+                </div>
+            `;
+            faqContainer.appendChild(faqItem);
+        });
+        setupAccordion();
+    }
+
+    // **Gukora Amakuru y'Ibyiciro (Rendering Categories)**
+    function renderCategories() {
+        const categories = [...new Set(faqData.map(item => item.category))];
+        categoryFilter.innerHTML = `<button class="category-button active" data-filter="all">Byose</button>`;
+        
+        categories.forEach(category => {
+            categoryFilter.innerHTML += `<button class="category-button" data-filter="${category}">${category}</button>`;
+        });
+        
+        // Add event listeners to category buttons
+        document.querySelectorAll('.category-button').forEach(button => {
+            button.addEventListener('click', function() {
+                const filter = this.getAttribute('data-filter');
+                filterByCategory(filter);
+                
+                // Active class control
+                document.querySelectorAll('.category-button').forEach(btn => btn.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+    }
+
+    // **Logic yo Gukoresha Accordion**
+    function setupAccordion() {
+        const faqQuestions = document.querySelectorAll('.faq-question');
+        faqQuestions.forEach(button => {
+            button.addEventListener('click', function() {
+                const answer = this.nextElementSibling;
+                
+                // Funga ibindi bisubizo byose
+                faqQuestions.forEach(otherButton => {
+                    if (otherButton !== this) {
+                        otherButton.nextElementSibling.style.maxHeight = null;
+                    }
+                });
+
+                // Fungura cyangwa Funga igisubizo cyakandanzweho
+                if (answer.style.maxHeight) {
+                    answer.style.maxHeight = null;
+                } else {
+                    answer.style.maxHeight = answer.scrollHeight + "px";
+                }
+            });
+        });
+    }
+
+    // **Logic yo Gushakisha (Filter by Category)**
+    function filterByCategory(category) {
+        const faqItems = document.querySelectorAll('.faq-item');
+        faqItems.forEach(item => {
+            const itemCategory = item.getAttribute('data-category');
+            if (category === 'all' || itemCategory === category) {
+                item.style.display = "";
+            } else {
+                item.style.display = "none";
+            }
+        });
+        // Reset search bar when filtering by category
+        document.getElementById('searchInput').value = ''; 
+    }
+    
+    // Tanga amakuru ya mbere (Start)
+    renderCategories();
+    renderFAQs(faqData);
+});
+
+// 3. Kugenza Gushakisha (Search/Filter by Text)
+function filterContent() {
+    const input = document.getElementById('searchInput');
+    const filter = input.value.toUpperCase();
+    const faqItems = document.querySelectorAll('.faq-item');
+    
+    // Deactivate all category buttons
+    document.querySelectorAll('.category-button').forEach(btn => btn.classList.remove('active'));
+
+    faqItems.forEach(item => {
+        const questionText = item.querySelector('.faq-question').textContent.toUpperCase();
+        const answerText = item.querySelector('.faq-answer').textContent.toUpperCase();
+        
+        // Kugaragaza (show) cyangwa Kwihisha (hide)
+        if (questionText.includes(filter) || answerText.includes(filter)) {
+            item.style.display = ""; // Garagaza
+        } else {
+            item.style.display = "none"; // Hisha
+        }
+    });
+}
+    </script>
+</body>
+</html>
